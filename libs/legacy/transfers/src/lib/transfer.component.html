@@ -1,0 +1,39 @@
+<div class="legacy-panel">
+  <div class="legacy-panel__header">New transfer</div>
+  <div class="legacy-panel__body">
+    <p *ngIf="loading">Loading…</p>
+
+    <form *ngIf="!loading && account" (submit)="$event.preventDefault(); submit()">
+      <div class="form-group">
+        <label>From</label>
+        <div class="form-static">{{ account.label }} — {{ account.balanceMad }} MAD available</div>
+      </div>
+
+      <div class="form-group">
+        <label for="beneficiary">Beneficiary</label>
+        <select id="beneficiary" class="form-control" (change)="onBeneficiary($event)">
+          <option *ngFor="let b of beneficiaries" [value]="b.rib" [selected]="b.rib === selectedRib">{{ b.name }} — {{ b.bank }}</option>
+        </select>
+      </div>
+
+      <div class="form-group">
+        <label for="amount">Amount (MAD)</label>
+        <input id="amount" class="form-control" type="number" min="0" step="0.01" (input)="onAmount($event)" />
+      </div>
+
+      <div class="form-group">
+        <label for="label">Label</label>
+        <input id="label" class="form-control" type="text" maxlength="35" (input)="onLabel($event)" />
+      </div>
+
+      <div class="alert alert-danger" *ngIf="error">{{ error }}</div>
+
+      <button type="submit" class="btn btn-primary" [disabled]="saving">
+        <span *ngIf="!saving">Confirm transfer</span>
+        <span *ngIf="saving">Sending…</span>
+      </button>
+    </form>
+
+    <p *ngIf="!loading && !account">Account not found.</p>
+  </div>
+</div>

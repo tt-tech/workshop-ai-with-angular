@@ -1,0 +1,25 @@
+{
+  "name": "data-access-banking",
+  "$schema": "../../../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "libs/data-access/banking/src",
+  "prefix": "lib",
+  "projectType": "library",
+  "tags": [
+    "scope:atlas",
+    "type:data-access"
+  ],
+  "targets": {
+    "test": {
+      "executor": "@nx/vitest:test",
+      "outputs": [
+        "{options.reportsDirectory}"
+      ],
+      "options": {
+        "reportsDirectory": "coverage/libs/data-access/banking"
+      }
+    },
+    "lint": {
+      "executor": "@nx/eslint:lint"
+    }
+  }
+}

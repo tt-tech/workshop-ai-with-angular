@@ -4,7 +4,7 @@ Read this first. The tool-specific files (`CLAUDE.md`, `.cursor/rules/`, `.githu
 
 ## What this is
 
-Customer-atlas back office for **Atlas Telecom**, an invented mobile operator. Support agents look up subscribers, change plans, handle tickets. Nx monorepo, Angular 22, standalone components + signals, Vitest. Everything here is demo data.
+Web banking for **Atlas Bank**, an invented Moroccan bank. A customer sees accounts and transactions, cards and requests, and makes transfers. Nx monorepo, Angular 22, standalone components + signals, Vitest. Everything here is demo data.
 
 ## Layout and boundaries (enforced: `npm run lint:arch`)
 
@@ -16,6 +16,8 @@ Customer-atlas back office for **Atlas Telecom**, an invented mobile operator. S
 | `libs/feature/*` | routed features that wire ui + data-access | ui, data-access, domain |
 | `libs/legacy/*` | **frozen** NgModule code being migrated — wrap it, don't extend it | data-access, domain |
 | `apps/atlas` | shell and routes only, no business logic | everything above |
+
+The app is **zoneless** (Angular's default). Never add `zone.js`. Legacy code in `libs/legacy` calls `ChangeDetectorRef.markForCheck()` after its manual subscriptions; that is a smell to migrate, not a pattern to copy.
 
 Cross-lib imports go through the `@atlas/*` aliases only, never relative paths into another lib. A lib's `src/index.ts` exports what consumers mount plus contract types; internals stay unexported.
 
@@ -34,7 +36,7 @@ Cross-lib imports go through the `@atlas/*` aliases only, never relative paths i
 ## Tests
 
 - A test is triggered by a **requirement**, not by the existence of a class. Test through the public API or the DOM, never implementation details.
-- Real collaborators inside the unit; test doubles only at the boundary (`FakeBackend` in `@atlas/data-access-subscribers`). Never mock a store to test a component that uses it.
+- Real collaborators inside the unit; test doubles only at the boundary (`FakeBackend` in `@atlas/data-access-banking`). Never mock a store to test a component that uses it.
 - No `setTimeout` / sleeps in tests. Use `await fixture.whenStable()` or assert store state.
 - **Never edit existing assertions to make a diff pass.** If an assertion is wrong, say so in the PR and stop.
 

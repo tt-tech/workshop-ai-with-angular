@@ -1,6 +1,6 @@
 # AI with Angular — workshop repository
 
-Demo workspace for the **AI with Angular** workshop (tt-tech.io). A customer-atlas back office for *Atlas Telecom*, an invented mobile operator: subscribers, plans, tickets, and a frozen legacy corner waiting to be migrated. Every exercise in the workshop runs on this codebase.
+Demo workspace for the **AI with Angular** workshop (tt-tech.io). Web banking for *Atlas Bank*, an invented Moroccan bank: accounts and transactions, cards, requests, and a frozen legacy transfers module waiting to be migrated. Every exercise in the workshop runs on this codebase.
 
 - Angular 22 · Nx · standalone components + signals · Vitest
 - Architecture enforced by ESLint module boundaries (and, for non-Nx teams, the same contract in `sheriff.config.ts`)
@@ -20,12 +20,13 @@ npm run typecheck
 
 ```
 apps/atlas                     shell + routes only
-libs/domain                   pure TS: models, canChangePlan(), formatMsisdn()
-libs/data-access/subscribers  FakeBackend (the boundary) + SubscribersStore, TicketsStore (signals)
-libs/ui                       StatusBadge, PageHeader (presentational)
-libs/feature/subscribers      list + detail routes
-libs/feature/tickets          list route
-libs/legacy/plans             NgModule + *ngIf + constructor DI + any — the module-2 migration target
+libs/domain                   pure TS: models, canTransfer(), formatRib(), formatMad()
+libs/data-access/banking      FakeBackend (the boundary) + AccountsStore, CardsStore, RequestsStore (signals)
+libs/ui                       StatusBadge, PageHeader, Amount, MadPipe (presentational)
+libs/feature/dashboard        overview route
+libs/feature/accounts         list + detail routes
+libs/feature/requests         list route
+libs/legacy/transfers         NgModule + *ngIf + constructor DI + any — the module-2 migration target
 docs/tasks                    task-file template + example task
 exercises                     one file per workshop module
 ```
@@ -40,4 +41,4 @@ exercises                     one file per workshop module
 
 ## Licence
 
-MIT. Invented data; no real operator, customer or client code.
+MIT. Invented data; no real bank, customer or client code.

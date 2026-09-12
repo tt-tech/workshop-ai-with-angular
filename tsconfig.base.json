@@ -22,23 +22,26 @@
     "noFallthroughCasesInSwitch": true,
     "noUnusedLocals": true,
     "paths": {
-      "@atlas/legacy-plans": [
-        "./libs/legacy/plans/src/index.ts"
-      ],
       "@atlas/domain": [
         "./libs/domain/src/index.ts"
-      ],
-      "@atlas/data-access-subscribers": [
-        "./libs/data-access/subscribers/src/index.ts"
       ],
       "@atlas/ui": [
         "./libs/ui/src/index.ts"
       ],
-      "@atlas/feature-subscribers": [
-        "./libs/feature/subscribers/src/index.ts"
+      "@atlas/feature-dashboard": [
+        "./libs/feature/dashboard/src/index.ts"
       ],
-      "@atlas/feature-tickets": [
-        "./libs/feature/tickets/src/index.ts"
+      "@atlas/data-access-banking": [
+        "./libs/data-access/banking/src/index.ts"
+      ],
+      "@atlas/feature-accounts": [
+        "./libs/feature/accounts/src/index.ts"
+      ],
+      "@atlas/feature-requests": [
+        "./libs/feature/requests/src/index.ts"
+      ],
+      "@atlas/legacy-transfers": [
+        "./libs/legacy/transfers/src/index.ts"
       ]
     }
   },

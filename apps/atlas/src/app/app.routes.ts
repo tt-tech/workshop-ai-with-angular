@@ -1,8 +1,8 @@
 import type { Route } from '@angular/router';
 
 export const appRoutes: Route[] = [
-  { path: '', pathMatch: 'full', redirectTo: 'subscribers' },
-  { path: 'subscribers', loadChildren: () => import('@atlas/feature-subscribers').then((m) => m.subscribersRoutes) },
-  { path: 'tickets', loadChildren: () => import('@atlas/feature-tickets').then((m) => m.ticketsRoutes) },
-  { path: 'plans/change', loadChildren: () => import('@atlas/legacy-plans').then((m) => m.LegacyPlansModule) },
+  { path: '', pathMatch: 'full', loadChildren: () => import('@atlas/feature-dashboard').then((m) => m.dashboardRoutes) },
+  { path: 'accounts', loadChildren: () => import('@atlas/feature-accounts').then((m) => m.accountsRoutes) },
+  { path: 'requests', loadChildren: () => import('@atlas/feature-requests').then((m) => m.requestsRoutes) },
+  { path: 'transfers', loadChildren: () => import('@atlas/legacy-transfers').then((m) => m.LegacyTransfersModule) },
 ];

@@ -15,10 +15,10 @@ import { ChangeDetectionStrategy, Component, input } from '@angular/core';
     </header>
   `,
   styles: `
-    .header { display: flex; align-items: flex-end; justify-content: space-between; gap: 1rem; margin-bottom: 1.5rem; }
-    .title { margin: 0; font-size: 1.6rem; }
-    .subtitle { margin: 0.25rem 0 0; color: #5a6270; }
-    .actions { display: flex; gap: 0.5rem; }
+    .header { display: flex; align-items: flex-end; justify-content: space-between; gap: 1.5rem; padding-bottom: 1.25rem; margin-bottom: 1.5rem; border-bottom: 1px solid var(--line); }
+    .title { margin: 0; font-size: 1.5rem; font-weight: 600; letter-spacing: -0.01em; }
+    .subtitle { margin: 0.25rem 0 0; color: var(--ink-2); }
+    .actions { display: flex; gap: 0.5rem; align-items: center; }
   `,
 })
 export class PageHeader {

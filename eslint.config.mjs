@@ -19,7 +19,12 @@ export default [
   ...nx.configs["flat/base"],
   ...nx.configs["flat/typescript"],
   ...nx.configs["flat/javascript"],
-  { ignores: ["**/dist", "**/out-tsc", "**/.nx"] },
+  {       "ignores": [
+        "**/dist",
+        "**/out-tsc",
+        "**/.nx",
+        "**/vitest.config.*.timestamp*"
+      ] },
   {
     files: ["**/*.ts", "**/*.tsx", "**/*.js", "**/*.jsx"],
     rules: {
@@ -59,6 +64,7 @@ export default [
     files: ["libs/legacy/**/*.html"],
     rules: {
       "@angular-eslint/template/prefer-control-flow": "off",
+      "@angular-eslint/template/label-has-associated-control": "off",
     },
   },
   {

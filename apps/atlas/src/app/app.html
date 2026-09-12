@@ -1,8 +1,20 @@
-<nav class="nav">
-  <span class="brand">Atlas Telecom</span>
-  <a routerLink="/subscribers" routerLinkActive="active">Subscribers</a>
-  <a routerLink="/tickets" routerLinkActive="active">Tickets</a>
-</nav>
-<main class="main">
-  <router-outlet />
-</main>
+<div class="shell">
+  <nav class="rail" aria-label="Main">
+    <a class="brand" routerLink="/">
+      <span class="brand__mark">A</span>
+      <span class="brand__name">Atlas Bank</span>
+    </a>
+    <a routerLink="/" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">Overview</a>
+    <a routerLink="/accounts" routerLinkActive="active">Accounts</a>
+    <a routerLink="/requests" routerLinkActive="active">Requests</a>
+    <div class="rail__spacer"></div>
+    <div class="agent">
+      <span class="agent__avatar">SI</span>
+      <span class="agent__name">Salma Idrissi</span>
+      <span class="agent__meta">Casablanca · Maarif</span>
+    </div>
+  </nav>
+  <main class="content">
+    <router-outlet />
+  </main>
+</div>

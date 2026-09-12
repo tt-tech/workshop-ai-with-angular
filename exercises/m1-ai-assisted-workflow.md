@@ -20,7 +20,7 @@ git diff --stat       # how big was that?
 1. Check out the starting state: `git checkout m1-unconstrained`. In this state `AGENTS.md` and the tool-specific files are **removed**, and the ESLint boundary rules are the Nx default (`*` may depend on `*`).
 2. Open the agent in the repo root and paste, verbatim:
 
-   > Add an "Export CSV" button on the subscribers page that downloads the currently filtered list. Also show the number of open tickets next to each subscriber in the table.
+   > Add an "Export CSV" button on the account page that downloads the currently filtered transactions. Also show the linked card status next to each account in the accounts list.
 
 3. Let it finish. Do not steer it. Run the checkpoint commands.
 4. Write down, on paper: how many files changed, how many lines, which libraries it touched, whether `ui` now imports `data-access`, whether it edited anything under `libs/legacy`, whether it touched an existing test's assertions.
@@ -35,15 +35,15 @@ Typical result in our runs: 6–12 files, 400–900 lines, a store injected into
 
 **Goal:** the same agent, the same prompt, inside the fence.
 
-1. `git checkout m1-with-rules`. This is `main`: `AGENTS.md` present, thin pointer files for each tool, boundary rules active in `eslint.config.mjs`, a task file at `docs/tasks/001-export-subscribers-csv.md`.
+1. `git checkout m1-with-rules`. This is `main`: `AGENTS.md` present, thin pointer files for each tool, boundary rules active in `eslint.config.mjs`, a task file at `docs/tasks/001-export-transactions-csv.md`.
 2. Read `AGENTS.md` once, as the agent will. Notice what is *not* in it: no architecture vision, no history. Fences and checks only.
 3. Open the agent and paste:
 
-   > Work from docs/tasks/001-export-subscribers-csv.md.
+   > Work from docs/tasks/001-export-transactions-csv.md.
 
    Nothing else. The task file carries scope, out-of-scope, done-when and the 300-line limit.
 4. Let it finish. Run the checkpoint commands. Compare with your scene 1 notes: files, lines, boundaries, legacy, assertions.
-5. Now break the fence on purpose: open `libs/ui/src/lib/page-header.ts`, inject `SubscribersStore` from `@atlas/data-access-subscribers`, run `npm run lint:arch`. Read the error. Revert. That error is what the agent loops on until it is fixed, because `AGENTS.md` says the command must pass before it is done.
+5. Now break the fence on purpose: open `libs/ui/src/lib/page-header.ts`, inject `AccountsStore` from `@atlas/data-access-banking`, run `npm run lint:arch`. Read the error. Revert. That error is what the agent loops on until it is fixed, because `AGENTS.md` says the command must pass before it is done.
 6. Optional: run the same task through Sheriff instead of Nx boundaries — `npm run lint:arch:sheriff` — and open `sheriff.config.ts`. Same contract, no Nx required.
 
 What to take from it: the difference between the two diffs is not the model. It is the 40 lines of `AGENTS.md` and the one lint rule.
@@ -65,8 +65,8 @@ Walk the diff with this list. Tick every rule the agent broke even though lint w
 - [ ] A service importing a type from a component
 - [ ] Data-shaping logic inside a component instead of a pure function with its own spec
 - [ ] A magic literal inline (`','`, `'text/csv'`, a column list) instead of a named `const`
-- [ ] A local constant that already exists in `libs/domain` (`formatMsisdn`, plan names)
-- [ ] A new pattern where a sibling already had the shape (compare with `subscriber-list.ts`)
+- [ ] A local constant that already exists in `libs/domain` (`formatMad`, `formatRib`, `categoryLabel`)
+- [ ] A new pattern where a sibling already had the shape (compare with `account-list.ts`)
 - [ ] A shared signature changed without updating every caller
 - [ ] A predicate whose name is not true when it returns true
 - [ ] A handler named after the DOM event instead of the intent (`onClick` vs `exportCsv`)
@@ -82,7 +82,7 @@ Three people, three different agents (or one person, three tools), the same task
 
 ```bash
 git checkout -b m1/<your-tool> main
-# run the task from docs/tasks/001-export-subscribers-csv.md with your agent
+# run the task from docs/tasks/001-export-transactions-csv.md with your agent
 npm run lint:arch && npm run test && git diff --stat main
 ```
 
