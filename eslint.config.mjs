@@ -3,17 +3,8 @@ import nx from "@nx/eslint-plugin";
 // Architecture as an executable contract.
 // Every lib carries exactly one scope:* and one type:* tag (see project.json).
 // The agent must make `npm run lint:arch` pass before it is done — see AGENTS.md.
-const depConstraints = [
-  { sourceTag: "scope:domain", onlyDependOnLibsWithTags: ["scope:domain"] },
-  { sourceTag: "scope:atlas", onlyDependOnLibsWithTags: ["scope:atlas", "scope:domain"] },
-
-  { sourceTag: "type:domain", onlyDependOnLibsWithTags: ["type:domain"] },
-  { sourceTag: "type:data-access", onlyDependOnLibsWithTags: ["type:data-access", "type:domain"] },
-  { sourceTag: "type:ui", onlyDependOnLibsWithTags: ["type:ui", "type:domain"] },
-  { sourceTag: "type:feature", onlyDependOnLibsWithTags: ["type:feature", "type:ui", "type:data-access", "type:domain"] },
-  { sourceTag: "type:legacy", onlyDependOnLibsWithTags: ["type:legacy", "type:data-access", "type:domain"] },
-  { sourceTag: "type:app", onlyDependOnLibsWithTags: ["type:feature", "type:ui", "type:data-access", "type:domain", "type:legacy"] },
-];
+// Scene 1: no architecture contract — anything may depend on anything (the Nx default).
+const depConstraints = [{ sourceTag: "*", onlyDependOnLibsWithTags: ["*"] }];
 
 export default [
   ...nx.configs["flat/base"],

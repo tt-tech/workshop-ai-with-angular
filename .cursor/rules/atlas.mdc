@@ -1,6 +1,0 @@
----
-description: Atlas repo rules — single source of truth is AGENTS.md
-alwaysApply: true
----
-
-Follow `AGENTS.md` at the repository root. It defines the layout, the boundaries enforced by `npm run lint:arch`, the non-negotiables, the test rules, the done-checklist and the task-file convention. Do not restate or override it here.
