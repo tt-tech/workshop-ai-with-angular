@@ -1,0 +1,25 @@
+{
+  "name": "feature-subscribers",
+  "$schema": "../../../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "libs/feature/subscribers/src",
+  "prefix": "lib",
+  "projectType": "library",
+  "tags": [
+    "scope:atlas",
+    "type:feature"
+  ],
+  "targets": {
+    "test": {
+      "executor": "@nx/vitest:test",
+      "outputs": [
+        "{options.reportsDirectory}"
+      ],
+      "options": {
+        "reportsDirectory": "coverage/libs/feature/subscribers"
+      }
+    },
+    "lint": {
+      "executor": "@nx/eslint:lint"
+    }
+  }
+}

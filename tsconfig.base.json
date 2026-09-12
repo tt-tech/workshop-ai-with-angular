@@ -1,0 +1,49 @@
+{
+  "compileOnSave": false,
+  "compilerOptions": {
+    "rootDir": ".",
+    "sourceMap": true,
+    "declaration": false,
+    "moduleResolution": "bundler",
+    "emitDecoratorMetadata": true,
+    "experimentalDecorators": true,
+    "importHelpers": true,
+    "target": "es2022",
+    "module": "esnext",
+    "lib": [
+      "es2023",
+      "dom"
+    ],
+    "skipLibCheck": true,
+    "skipDefaultLibCheck": true,
+    "strict": true,
+    "noImplicitOverride": true,
+    "noImplicitReturns": true,
+    "noFallthroughCasesInSwitch": true,
+    "noUnusedLocals": true,
+    "paths": {
+      "@atlas/legacy-plans": [
+        "./libs/legacy/plans/src/index.ts"
+      ],
+      "@atlas/domain": [
+        "./libs/domain/src/index.ts"
+      ],
+      "@atlas/data-access-subscribers": [
+        "./libs/data-access/subscribers/src/index.ts"
+      ],
+      "@atlas/ui": [
+        "./libs/ui/src/index.ts"
+      ],
+      "@atlas/feature-subscribers": [
+        "./libs/feature/subscribers/src/index.ts"
+      ],
+      "@atlas/feature-tickets": [
+        "./libs/feature/tickets/src/index.ts"
+      ]
+    }
+  },
+  "exclude": [
+    "node_modules",
+    "tmp"
+  ]
+}

@@ -1,0 +1,1 @@
+Follow `AGENTS.md` at the repository root — layout and boundaries (`npm run lint:arch`), non-negotiables, test rules, the done-checklist and task files under `docs/tasks/`. This file intentionally adds nothing.
