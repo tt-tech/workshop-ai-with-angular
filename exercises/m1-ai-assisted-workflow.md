@@ -88,7 +88,7 @@ npm run lint:arch && npm run test && git diff --stat main
 
 Put the three diffs side by side. Discuss: where do they differ, and is any difference bigger than the scene 1 → scene 2 difference? In our runs, never.
 
-Notice what made three tools behave the same: `AGENTS.md` (one source of truth), thin per-tool pointers (`CLAUDE.md`, `.cursor/rules/atlas.mdc`, `.github/copilot-instructions.md`, `GEMINI.md`), Angular's official agent skills in the open skills format, and checks that don't care who wrote the code.
+Notice what made three tools behave the same: `AGENTS.md` (one source of truth), thin per-tool pointers (`CLAUDE.md`, `.cursor/rules/atlas.mdc`, `.github/copilot-instructions.md`, `GEMINI.md`), the layered skills (`angular-developer` from Angular itself + the repo's own `atlas-conventions`, which is the 40-line diff and wins on conflict — e.g. it forbids restating OnPush because it is the v22 default), and checks that don't care who wrote the code.
 
 ---
 

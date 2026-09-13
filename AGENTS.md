@@ -21,6 +21,12 @@ The app is **zoneless** (Angular's default). Never add `zone.js`. Legacy code in
 
 Cross-lib imports go through the `@atlas/*` aliases only, never relative paths into another lib. A lib's `src/index.ts` exports what consumers mount plus contract types; internals stay unexported.
 
+## Skills (layered guidance)
+
+1. **Official Angular skills** (`.agents/skills/angular-developer`, `angular-new-app`, installed with `npx skills add https://github.com/angular/skills`) and the Nx skills — the baseline, kept current upstream.
+2. **`atlas-conventions`** (`.agents/skills/atlas-conventions/SKILL.md`) — the short diff where this repo is stricter or differs (v22 defaults such as OnPush and zoneless are never restated in code, store shape, test pattern, naming). **Where the two disagree, `atlas-conventions` and this file win.**
+3. Your personal rules on top.
+
 ## Non-negotiables
 
 - New components are **standalone**, use **signals**, `inject()`, `input()`/`output()`, and the new control flow (`@if`, `@for`). No new NgModules. No `*ngIf`/`*ngFor` outside `libs/legacy`. OnPush is Angular's default since v22 — never write `changeDetection:` on a component, and never opt into `Eager`.
