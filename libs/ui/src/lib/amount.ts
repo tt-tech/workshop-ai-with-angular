@@ -1,9 +1,8 @@
-import { ChangeDetectionStrategy, Component, computed, input } from '@angular/core';
+import { Component, computed, input } from '@angular/core';
 import { MadPipe } from './mad.pipe';
 
 @Component({
   selector: 'atlas-amount',
-  changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [MadPipe],
   template: `<span class="amount" [class.amount--credit]="isCredit()" [class.amount--debit]="!isCredit()">{{ signed() | mad }}</span>`,
   styles: `

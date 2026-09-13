@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, inject, OnInit } from '@angular/core';
+import { Component, inject, OnInit } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { formatRib, packageById } from '@atlas/domain';
 import { AccountsStore } from '@atlas/data-access-banking';
@@ -6,7 +6,6 @@ import { MadPipe, PageHeader, StatusBadge } from '@atlas/ui';
 
 @Component({
   selector: 'atlas-account-list',
-  changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [RouterLink, MadPipe, PageHeader, StatusBadge],
   template: `
     <atlas-page-header title="Accounts" [subtitle]="store.accounts().length + ' accounts · ' + (store.totalBalanceMad() | mad) + ' in total'" />

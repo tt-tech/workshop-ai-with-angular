@@ -1,10 +1,9 @@
-import { ChangeDetectionStrategy, Component, inject, OnInit } from '@angular/core';
+import { Component, inject, OnInit } from '@angular/core';
 import { RequestsStore } from '@atlas/data-access-banking';
 import { PageHeader, StatusBadge } from '@atlas/ui';
 
 @Component({
   selector: 'atlas-request-list',
-  changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [PageHeader, StatusBadge],
   template: `
     <atlas-page-header title="Requests" [subtitle]="store.openCount() + ' in progress'" />

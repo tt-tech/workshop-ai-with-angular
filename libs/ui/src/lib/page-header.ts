@@ -1,8 +1,7 @@
-import { ChangeDetectionStrategy, Component, input } from '@angular/core';
+import { Component, input } from '@angular/core';
 
 @Component({
   selector: 'atlas-page-header',
-  changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
     <header class="header">
       <div>

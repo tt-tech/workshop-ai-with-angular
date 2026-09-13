@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, computed, input } from '@angular/core';
+import { Component, computed, input } from '@angular/core';
 import type { AccountStatus, CardStatus, RequestStatus } from '@atlas/domain';
 
 type BadgeStatus = AccountStatus | CardStatus | RequestStatus;
@@ -14,7 +14,6 @@ const tone: Record<BadgeStatus, 'ok' | 'attention' | 'muted'> = {
 
 @Component({
   selector: 'atlas-status-badge',
-  changeDetection: ChangeDetectionStrategy.OnPush,
   template: `<span class="badge" [class]="'badge badge--' + tone()"><i class="dot"></i>{{ status() }}</span>`,
   styles: `
     .badge { display: inline-flex; align-items: center; gap: 0.4rem; font-size: 0.8125rem; font-weight: 500; text-transform: capitalize; color: var(--ink-2); }

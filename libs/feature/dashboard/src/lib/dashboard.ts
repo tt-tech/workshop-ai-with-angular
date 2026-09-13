@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, computed, inject, OnInit } from '@angular/core';
+import { Component, computed, inject, OnInit } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { categoryLabel, maskRib } from '@atlas/domain';
 import { AccountsStore, CardsStore, RequestsStore } from '@atlas/data-access-banking';
@@ -9,7 +9,6 @@ const customerFirstName = 'Salma';
 
 @Component({
   selector: 'atlas-dashboard',
-  changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [RouterLink, Amount, MadPipe, StatusBadge],
   template: `
     <section class="hero">

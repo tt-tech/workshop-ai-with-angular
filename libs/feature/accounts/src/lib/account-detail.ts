@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, computed, inject, input, OnInit, signal } from '@angular/core';
+import { Component, computed, inject, input, OnInit, signal } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { categoryLabel, formatRib, packageById, type TransactionCategory } from '@atlas/domain';
 import { AccountsStore, CardsStore } from '@atlas/data-access-banking';
@@ -8,7 +8,6 @@ const allCategories = 'all';
 
 @Component({
   selector: 'atlas-account-detail',
-  changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [RouterLink, Amount, MadPipe, PageHeader, StatusBadge],
   template: `
     @let a = account();
