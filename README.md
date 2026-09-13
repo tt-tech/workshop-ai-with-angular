@@ -16,6 +16,10 @@ npm run lint:arch    # boundaries + house rules
 npm run typecheck
 ```
 
+## Architecture
+
+Diagrams (dependency contract, runtime flow, legacy corner, agent guidance, git tags): [`docs/architecture.md`](docs/architecture.md). Screenshots: [`docs/screenshots/`](docs/screenshots/).
+
 ## Layout
 
 ```
