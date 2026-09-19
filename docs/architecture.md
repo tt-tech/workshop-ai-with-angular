@@ -132,7 +132,7 @@ flowchart TB
   class AG src
 ```
 
-## 5. Module 1 in git
+## 5. Modules 1–2 in git
 
 ```mermaid
 gitGraph
@@ -141,9 +141,13 @@ gitGraph
   branch m1-unconstrained
   commit id: "no AGENTS.md, no boundaries" tag: "m1-unconstrained"
   checkout main
+  commit id: "module 2 exercise + task files 002/003" tag: "m2-start"
+  commit id: "feature-transfers + route flipped" tag: "m2-migrated"
 ```
 
 `m1-unconstrained` is `main` minus the guidance files and with `depConstraints` reset to `* → *`. Scene 1 runs there; scenes 2 and 3 run on `main`.
+
+`m2-start` is `main` after module 1: legacy still routed, `docs/tasks/002-migrate-transfers-to-feature.md` and `docs/tasks/003-delete-legacy-transfers.md` present. `m2-migrated` adds `libs/feature/transfers` and flips the `/transfers` route to it; `libs/legacy/transfers` is still present and untouched. Scene 4 (deleting it) is not tagged.
 
 ## Screenshots
 

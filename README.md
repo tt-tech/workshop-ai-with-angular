@@ -31,7 +31,7 @@ libs/feature/dashboard        overview route
 libs/feature/accounts         list + detail routes
 libs/feature/requests         list route
 libs/legacy/transfers         NgModule + *ngIf + constructor DI + any — the module-2 migration target
-docs/tasks                    task-file template + example task
+docs/tasks                    task-file template + tasks 001 (module 1), 002/003 (module 2)
 exercises                     one file per workshop module
 ```
 
@@ -40,7 +40,7 @@ exercises                     one file per workshop module
 | Module | File | Git tags used |
 |---|---|---|
 | 1 — AI-assisted workflow | `exercises/m1-ai-assisted-workflow.md` | `m1-unconstrained`, `m1-with-rules` |
-| 2 — Modernising legacy Angular with agents | *(coming)* | |
+| 2 — Modernising legacy Angular with agents | `exercises/m2-modernising-legacy.md` | `m2-start`, `m2-migrated` |
 | 3 — Building an AI feature | *(coming)* | |
 
 ## Licence
