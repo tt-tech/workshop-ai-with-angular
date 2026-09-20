@@ -4,7 +4,7 @@ Read this first. The tool-specific files (`CLAUDE.md`, `.cursor/rules/`, `.githu
 
 ## What this is
 
-Web banking for **Atlas Bank**, an invented Moroccan bank. A customer sees accounts and transactions, cards and requests, and makes transfers. Nx monorepo, Angular 22, standalone components + signals, Vitest. Everything here is demo data.
+Web banking for **Atlas Bank**, an imaginary Moroccan bank. A customer sees accounts and transactions, cards and requests, and makes transfers. Nx monorepo, Angular 22, standalone components + signals, Vitest. Everything here is demo data.
 
 ## Layout and boundaries (enforced: `npm run lint:arch`)
 

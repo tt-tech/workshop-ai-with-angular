@@ -1,6 +1,6 @@
 # AI with Angular — workshop repository
 
-Demo workspace for the **AI with Angular** workshop (tt-tech.io). Web banking for *Atlas Bank*, an invented Moroccan bank: accounts and transactions, cards, requests, and a frozen legacy transfers module waiting to be migrated. Every exercise in the workshop runs on this codebase.
+Demo workspace for the **AI with Angular** workshop (tt-tech.io). Web banking for *Atlas Bank*, an imaginary Moroccan bank: accounts and transactions, cards, requests, and a frozen legacy transfers module waiting to be migrated. Every exercise in the workshop runs on this codebase.
 
 - Angular 22 · Nx · standalone components + signals · Vitest
 - Architecture enforced by ESLint module boundaries (and, for non-Nx teams, the same contract in `sheriff.config.ts`)
@@ -45,4 +45,4 @@ exercises                     one file per workshop module
 
 ## Licence
 
-MIT. Invented data; no real bank, customer or client code.
+MIT. Imaginary data; no real bank, customer or client code.
