@@ -1,6 +1,6 @@
 import { Component, computed, inject, input, OnInit, signal } from '@angular/core';
 import { Router } from '@angular/router';
-import { blockerMessage, canTransfer, type TransferVerdict } from '@atlas/domain';
+import { blockerMessage, canTransfer, packageById, type TransferVerdict } from '@atlas/domain';
 import { AccountsStore } from '@atlas/data-access-banking';
 import { MadPipe, PageHeader } from '@atlas/ui';
 
@@ -27,7 +27,7 @@ const labelMaxLength = 35;
           <input type="number" min="0" step="0.01" (input)="amountMad.set($any($event.target).valueAsNumber || 0)" />
         </label>
         <label class="field">
-          Label
+          Label <span class="hint">(use **bold** for emphasis on the receipt)</span>
           <input type="text" [attr.maxlength]="labelMaxLength" (input)="label.set($any($event.target).value)" />
         </label>
         @if (error(); as message) {
@@ -45,6 +45,7 @@ const labelMaxLength = 35;
     .form { display: grid; gap: 1rem; max-width: 34rem; }
     .field { display: grid; gap: 0.35rem; color: var(--ink-2); font-size: 0.875rem; }
     .field input, .field select { font: inherit; padding: 0.5rem 0.75rem; border: 1px solid var(--line); border-radius: 0.5rem; color: var(--ink); background: var(--paper); }
+    .hint { color: var(--ink-2); font-weight: 400; }
     .error { margin: 0; color: #b42318; }
     .muted { color: var(--ink-2); }
   `,
@@ -67,10 +68,15 @@ export class NewTransfer implements OnInit {
   /** The chosen beneficiary, or the first one until the user picks: derived, never written from a computed. */
   protected readonly selectedRib = computed(() => this.toRib() || this.beneficiaries()[0]?.rib || '');
 
+  protected readonly premium = computed(() => packageById(this.account()?.packageId ?? 'atlas-essentiel').id === 'atlas-premium');
+
   protected readonly verdict = computed<TransferVerdict | undefined>(() => {
     const from = this.account();
     if (!from) return undefined;
-    return canTransfer({ from, toRib: this.selectedRib(), amountMad: this.amountMad(), transferredTodayMad: this.store.transferredTodayMad(from.id) });
+    const verdict = canTransfer({ from, toRib: this.selectedRib(), amountMad: this.amountMad(), transferredTodayMad: this.store.transferredTodayMad(from.id) });
+    // PRODUCT-412: Atlas Premium customers may exceed the daily transfer limit
+    if (!verdict.ok && verdict.reason === 'over-daily-limit' && this.premium()) return { ok: true };
+    return verdict;
   });
 
   protected readonly error = computed(() => {
@@ -87,7 +93,7 @@ export class NewTransfer implements OnInit {
     const from = this.account();
     if (!from || !this.verdict()?.ok) return;
     this.saving.set(true);
-    await this.store.transfer(from.id, this.selectedRib(), this.amountMad(), this.label());
-    await this.router.navigate(['/accounts', from.id]);
+    const created = await this.store.transfer(from.id, this.selectedRib(), this.amountMad(), this.label());
+    await this.router.navigate(['/transfers/receipt', created.id]);
   }
 }

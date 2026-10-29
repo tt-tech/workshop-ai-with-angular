@@ -55,9 +55,14 @@ export class AccountsStore {
       .reduce((sum, t) => sum - t.amountMad, 0);
   }
 
-  async transfer(fromAccountId: string, toRib: string, amountMad: number, label: string): Promise<void> {
+  transactionById(id: string) {
+    return computed(() => this.transactionsState().find((t) => t.id === id));
+  }
+
+  async transfer(fromAccountId: string, toRib: string, amountMad: number, label: string): Promise<Transaction> {
     const created = await this.backend.transfer(fromAccountId, toRib, amountMad, label);
     this.transactionsState.update((all) => [created, ...all]);
     this.accountsState.update((all) => all.map((a) => (a.id === fromAccountId ? { ...a, balanceMad: a.balanceMad - amountMad } : a)));
+    return created;
   }
 }

@@ -21,7 +21,7 @@ class InstantBackend extends FakeBackend {
 const setup = async (accountId = 'a-1') => {
   TestBed.configureTestingModule({
     imports: [NewTransfer],
-    providers: [provideRouter([{ path: 'accounts/:id', children: [] }], withComponentInputBinding()), { provide: FakeBackend, useClass: InstantBackend }],
+    providers: [provideRouter([{ path: 'accounts/:id', children: [] }, { path: 'transfers/receipt/:txId', children: [] }], withComponentInputBinding()), { provide: FakeBackend, useClass: InstantBackend }],
   });
   const fixture = TestBed.createComponent(NewTransfer);
   fixture.componentRef.setInput('accountId', accountId);
@@ -65,12 +65,12 @@ describe('NewTransfer', () => {
     expect(el.querySelector('[role=alert]')?.textContent).toBe('This account is blocked. Contact your advisor to unblock it.');
   });
 
-  it('moves the money and lands on the account page', async () => {
+  it('moves the money and lands on the receipt', async () => {
     const { type, submit, store, router } = await setup();
     type('input[type=number]', '500');
     type('input[type=text]', 'Loyer');
     await submit();
     expect(store.accounts()[0].balanceMad).toBe(1500);
-    expect(router.url).toBe('/accounts/a-1');
+    expect(router.url).toBe('/transfers/receipt/t-1');
   });
 });
