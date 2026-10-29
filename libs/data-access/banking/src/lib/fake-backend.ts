@@ -1,10 +1,10 @@
-import { Injectable } from '@angular/core';
+import { inject, Injectable, PendingTasks } from '@angular/core';
 import type { Account, Beneficiary, Card, ServiceRequest, Transaction } from '@atlas/domain';
 
 // The system boundary. Tests may replace this with a fake; nothing else in the app talks to "the server".
 // Everything below is invented demo data. Latency is simulated so loading states are real.
 
-const latencyMs = 250;
+const defaultLatencyMs = 250;
 
 const seedAccounts: Account[] = [
   { id: 'a-current', rib: '007780000123456789012345', label: 'Current account', type: 'current', status: 'active', packageId: 'atlas-confort', balanceMad: 18642.35, openedOn: '2019-09-02' },
@@ -48,42 +48,57 @@ const seedRequests: ServiceRequest[] = [
   { id: 'r-4', subject: 'Address change', category: 'other', status: 'closed', createdAt: '2026-07-15' },
 ];
 
-const delay = (ms: number): Promise<void> => new Promise((resolve) => setTimeout(resolve, ms));
+const wait = (ms: number): Promise<void> => new Promise((resolve) => setTimeout(resolve, ms));
 
 @Injectable({ providedIn: 'root' })
 export class FakeBackend {
-  private accounts: Account[] = [...seedAccounts];
-  private transactions: Transaction[] = [...seedTransactions];
-  private cards: Card[] = [...seedCards];
-  private requests: ServiceRequest[] = [...seedRequests];
+  /** Test doubles set this to 0 so a zoneless `whenStable()` does not have to wait for a timer. */
+  protected readonly latencyMs: number = defaultLatencyMs;
+  /** Every call is a pending task, so a zoneless `whenStable()` waits for the "server" the way it waits for the router. */
+  private readonly pending = inject(PendingTasks);
+  // Protected so a test double can swap the dataset while keeping every method's behaviour (transfer() must see the same accounts getAccounts() returns).
+  protected accounts: Account[] = [...seedAccounts];
+  protected transactions: Transaction[] = [...seedTransactions];
+  protected cards: Card[] = [...seedCards];
+  protected requests: ServiceRequest[] = [...seedRequests];
+  protected beneficiaries: Beneficiary[] = [...seedBeneficiaries];
+
+  private async delay(): Promise<void> {
+    const done = this.pending.add();
+    try {
+      if (this.latencyMs > 0) await wait(this.latencyMs);
+    } finally {
+      done();
+    }
+  }
 
   async getAccounts(): Promise<Account[]> {
-    await delay(latencyMs);
+    await this.delay();
     return [...this.accounts];
   }
 
   async getTransactions(): Promise<Transaction[]> {
-    await delay(latencyMs);
+    await this.delay();
     return [...this.transactions];
   }
 
   async getCards(): Promise<Card[]> {
-    await delay(latencyMs);
+    await this.delay();
     return [...this.cards];
   }
 
   async getBeneficiaries(): Promise<Beneficiary[]> {
-    await delay(latencyMs);
-    return [...seedBeneficiaries];
+    await this.delay();
+    return [...this.beneficiaries];
   }
 
   async getRequests(): Promise<ServiceRequest[]> {
-    await delay(latencyMs);
+    await this.delay();
     return [...this.requests];
   }
 
   async transfer(fromAccountId: string, toRib: string, amountMad: number, label: string): Promise<Transaction> {
-    await delay(latencyMs);
+    await this.delay();
     const index = this.accounts.findIndex((a) => a.id === fromAccountId);
     if (index === -1) throw new Error(`Unknown account ${fromAccountId}`);
     const from = this.accounts[index];
@@ -101,7 +116,7 @@ export class FakeBackend {
   }
 
   async setCardStatus(cardId: string, status: Card['status']): Promise<Card> {
-    await delay(latencyMs);
+    await this.delay();
     const index = this.cards.findIndex((c) => c.id === cardId);
     if (index === -1) throw new Error(`Unknown card ${cardId}`);
     const updated: Card = { ...this.cards[index], status };
@@ -110,7 +125,7 @@ export class FakeBackend {
   }
 
   async createRequest(request: Omit<ServiceRequest, 'id' | 'createdAt' | 'status'>): Promise<ServiceRequest> {
-    await delay(latencyMs);
+    await this.delay();
     const created: ServiceRequest = { ...request, id: `r-${this.requests.length + 1}`, status: 'open', createdAt: new Date().toISOString().slice(0, 10) };
     this.requests = [created, ...this.requests];
     return created;

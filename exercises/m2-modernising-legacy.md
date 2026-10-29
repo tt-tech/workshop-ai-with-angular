@@ -16,6 +16,19 @@ git diff --stat main -- libs/legacy      # must print nothing until scene 4
 
 ---
 
+## Scene 0 — Pin the behaviour before you touch it (25 min)
+
+**Goal:** a photograph of the legacy module as tests, before any migration step, so every later step can be compared against it.
+
+1. `git checkout m2-start`. Read `docs/tasks/000-pin-legacy-transfers.md`: new `*.spec.ts` files only, nothing else may change.
+2. Paste, verbatim:
+
+   > Read AGENTS.md and docs/tasks/000-pin-legacy-transfers.md. Write characterisation tests for libs/legacy/transfers/src/lib/transfer.component.ts validate() and for TransferService. Do not modify any file that is not a new *.spec.ts. One it() per rule or branch, named for the behaviour it records. Assert hardcoded strings and numbers. Where the current behaviour looks like a bug, keep the test true to the current behaviour and add `// TODO 000: looks wrong because …` above it. Run npm run test and report the count.
+
+3. Checkpoint: `npm run test` green, and `git diff --stat m2-start -- ':!*.spec.ts'` prints nothing. If it prints anything, the agent "fixed" the code it was asked to photograph. Revert and say so in the prompt.
+4. Read the `TODO 000` comments. That is the bug list of the legacy module, written by something that read every branch. The reference spec is `libs/legacy/transfers/src/lib/transfer.component.spec.ts` on `m2-migrated` (nine cases, one TODO: the daily limit ignores earlier transfers today).
+5. Keep these tests running through scenes 2 to 4. After scene 2, run them against the new component's messages through the DOM: every green is a behaviour preserved, every red is a decision for the PR.
+
 ## Scene 1 — Ask the agent for a plan, not code (20 min)
 
 **Goal:** see the plan an agent proposes when nobody stops it, then correct it before a line is written.

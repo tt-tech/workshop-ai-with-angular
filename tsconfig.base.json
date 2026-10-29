@@ -40,6 +40,9 @@
       "@atlas/feature-requests": [
         "./libs/feature/requests/src/index.ts"
       ],
+      "@atlas/feature-transfers": [
+        "./libs/feature/transfers/src/index.ts"
+      ],
       "@atlas/legacy-transfers": [
         "./libs/legacy/transfers/src/index.ts"
       ]
