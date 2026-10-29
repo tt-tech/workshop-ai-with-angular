@@ -1,4 +1,4 @@
-# Atlas — rules for coding agents
+# Atlas Bank — rules for coding agents
 
 Read this first. The tool-specific files (`CLAUDE.md`, `.cursor/rules/`, `.github/copilot-instructions.md`, `GEMINI.md`) only point here. One source of truth, any agent.
 

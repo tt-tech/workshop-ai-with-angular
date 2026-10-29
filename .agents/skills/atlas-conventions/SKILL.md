@@ -3,7 +3,7 @@ name: atlas-conventions
 description: Repo-specific Angular conventions for the Atlas Bank workshop workspace — the 40-line diff on top of the official angular-developer skill. Use whenever creating or editing a component, store, or test in this repo; where this file and the official Angular skill disagree, this file wins.
 ---
 
-# Atlas conventions (the diff on top of the official Angular skill)
+# Atlas Bank conventions (the diff on top of the official Angular skill)
 
 The official `angular-developer` skill is installed and is the baseline. This skill only lists where this repo deliberately differs or is stricter. Everything else: follow the official skill and `AGENTS.md`.
 
