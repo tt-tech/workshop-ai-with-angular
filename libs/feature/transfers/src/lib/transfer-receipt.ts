@@ -1,9 +1,8 @@
 import { Component, computed, inject, input, OnInit } from '@angular/core';
-import { DomSanitizer } from '@angular/platform-browser';
 import { RouterLink } from '@angular/router';
-import { AccountsStore } from '@atlas/data-access-banking';
+import { AccountsStore, RatesStore } from '@atlas/data-access-banking';
 import { MadPipe, PageHeader } from '@atlas/ui';
-import { FxService } from './fx.service';
+import { formatLabel } from './label-format';
 
 @Component({
   selector: 'atlas-transfer-receipt',
@@ -18,7 +17,11 @@ import { FxService } from './fx.service';
         <dt>Amount</dt>
         <dd class="amount">{{ -t.amountMad | mad }} @if (eur(); as e) { <span class="muted">≈ {{ e }} EUR</span> }</dd>
         <dt>Label</dt>
-        <dd [innerHTML]="labelHtml()"></dd>
+        <dd class="label">
+          @for (s of label(); track $index) {
+            @if (s.bold) { <b>{{ s.text }}</b> } @else { {{ s.text }} }
+          }
+        </dd>
         <dt>Reference</dt>
         <dd class="mono">{{ t.id }}</dd>
       </dl>
@@ -40,23 +43,20 @@ export class TransferReceipt implements OnInit {
   readonly txId = input.required<string>();
 
   private readonly store = inject(AccountsStore);
-  private readonly fx = inject(FxService);
-  private readonly sanitizer = inject(DomSanitizer);
+  private readonly rates = inject(RatesStore);
 
   protected readonly tx = computed(() => this.store.transactionById(this.txId())());
+  protected readonly label = computed(() => formatLabel(this.tx()?.label ?? ''));
 
   protected readonly eur = computed(() => {
-    const rate = this.fx.eurPerMad();
+    const rate = this.rates.eurPerMad();
     const t = this.tx();
     return rate && t ? (-t.amountMad * rate).toFixed(2) : undefined;
   });
 
-  // Renders **bold** from the label the customer typed
-  protected readonly labelHtml = computed(() => this.sanitizer.bypassSecurityTrustHtml((this.tx()?.label ?? '').replace(/\*\*(.+?)\*\*/g, '<b>$1</b>')));
-
   ngOnInit(): void {
     void this.store.load();
-    void this.fx.load();
+    void this.rates.load();
   }
 
   share(): void {

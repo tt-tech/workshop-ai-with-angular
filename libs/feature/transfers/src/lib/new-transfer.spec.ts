@@ -10,6 +10,7 @@ class InstantBackend extends FakeBackend {
   protected override accounts: Account[] = [
     { id: 'a-1', rib: '007780000123456789012345', label: 'Current account', type: 'current', status: 'active', packageId: 'atlas-essentiel', balanceMad: 2000, openedOn: '2020-01-01' },
     { id: 'a-blocked', rib: '007780000998877665544332', label: 'Joint account', type: 'current', status: 'blocked', packageId: 'atlas-essentiel', balanceMad: 500, openedOn: '2023-06-30' },
+    { id: 'a-premium', rib: '007780000111222333444555', label: 'Premium current', type: 'current', status: 'active', packageId: 'atlas-premium', balanceMad: 900000, openedOn: '2018-02-02' },
   ];
   protected override transactions = [];
   protected override beneficiaries: Beneficiary[] = [
@@ -63,6 +64,15 @@ describe('NewTransfer', () => {
     type('input[type=number]', '100');
     await submit();
     expect(el.querySelector('[role=alert]')?.textContent).toBe('This account is blocked. Contact your advisor to unblock it.');
+  });
+
+  it('keeps a premium account inside its daily limit, in the UI and at the boundary', async () => {
+    const { el, type, submit, store } = await setup('a-premium');
+    type('input[type=number]', '250000');
+    await submit();
+    expect(el.querySelector('[role=alert]')?.textContent).toBe('This transfer exceeds the daily limit of your package.');
+    expect(store.accounts().find((a) => a.id === 'a-premium')?.balanceMad).toBe(900000);
+    await expect(TestBed.inject(FakeBackend).transfer('a-premium', '011780000987654321098765', 250000, 'x')).rejects.toThrow('daily limit');
   });
 
   it('moves the money and lands on the receipt', async () => {

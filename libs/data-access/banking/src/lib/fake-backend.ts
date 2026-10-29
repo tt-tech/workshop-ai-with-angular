@@ -1,5 +1,5 @@
 import { inject, Injectable, PendingTasks } from '@angular/core';
-import type { Account, Beneficiary, Card, ServiceRequest, Transaction } from '@atlas/domain';
+import { blockerMessage, canTransfer, type Account, type Beneficiary, type Card, type ServiceRequest, type Transaction } from '@atlas/domain';
 
 // The system boundary. Tests may replace this with a fake; nothing else in the app talks to "the server".
 // Everything below is invented demo data. Latency is simulated so loading states are real.
@@ -47,6 +47,8 @@ const seedRequests: ServiceRequest[] = [
   { id: 'r-3', subject: 'Car loan simulation — 180 000 MAD over 60 months', category: 'loan', status: 'open', createdAt: '2026-08-29' },
   { id: 'r-4', subject: 'Address change', category: 'other', status: 'closed', createdAt: '2026-07-15' },
 ];
+
+const demoEurPerMad = 0.092;
 
 const wait = (ms: number): Promise<void> => new Promise((resolve) => setTimeout(resolve, ms));
 
@@ -97,11 +99,20 @@ export class FakeBackend {
     return [...this.requests];
   }
 
+  /** The demo "exchange rate service": the key for the real one lives here, server side, never in the bundle. */
+  async getEurRate(): Promise<number> {
+    await this.delay();
+    return demoEurPerMad;
+  }
+
   async transfer(fromAccountId: string, toRib: string, amountMad: number, label: string): Promise<Transaction> {
     await this.delay();
     const index = this.accounts.findIndex((a) => a.id === fromAccountId);
     if (index === -1) throw new Error(`Unknown account ${fromAccountId}`);
     const from = this.accounts[index];
+    // The rule is enforced at the boundary. The client runs the same check for the UX; the server runs it for real.
+    const verdict = canTransfer({ from, toRib, amountMad, transferredTodayMad: this.transferredToday(fromAccountId) });
+    if (!verdict.ok) throw new Error(blockerMessage[verdict.reason]);
     this.accounts = this.accounts.with(index, { ...from, balanceMad: from.balanceMad - amountMad });
     const created: Transaction = {
       id: `t-${this.transactions.length + 1}`,
@@ -113,6 +124,13 @@ export class FakeBackend {
     };
     this.transactions = [created, ...this.transactions];
     return created;
+  }
+
+  private transferredToday(accountId: string): number {
+    const today = new Date().toISOString().slice(0, 10);
+    return this.transactions
+      .filter((t) => t.accountId === accountId && t.category === 'transfer' && t.date === today && t.amountMad < 0)
+      .reduce((sum, t) => sum - t.amountMad, 0);
   }
 
   async setCardStatus(cardId: string, status: Card['status']): Promise<Card> {

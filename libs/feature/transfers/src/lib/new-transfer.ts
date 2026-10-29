@@ -1,6 +1,6 @@
 import { Component, computed, inject, input, OnInit, signal } from '@angular/core';
 import { Router } from '@angular/router';
-import { blockerMessage, canTransfer, packageById, type TransferVerdict } from '@atlas/domain';
+import { blockerMessage, canTransfer, type TransferVerdict } from '@atlas/domain';
 import { AccountsStore } from '@atlas/data-access-banking';
 import { MadPipe, PageHeader } from '@atlas/ui';
 
@@ -68,15 +68,10 @@ export class NewTransfer implements OnInit {
   /** The chosen beneficiary, or the first one until the user picks: derived, never written from a computed. */
   protected readonly selectedRib = computed(() => this.toRib() || this.beneficiaries()[0]?.rib || '');
 
-  protected readonly premium = computed(() => packageById(this.account()?.packageId ?? 'atlas-essentiel').id === 'atlas-premium');
-
   protected readonly verdict = computed<TransferVerdict | undefined>(() => {
     const from = this.account();
     if (!from) return undefined;
-    const verdict = canTransfer({ from, toRib: this.selectedRib(), amountMad: this.amountMad(), transferredTodayMad: this.store.transferredTodayMad(from.id) });
-    // PRODUCT-412: Atlas Premium customers may exceed the daily transfer limit
-    if (!verdict.ok && verdict.reason === 'over-daily-limit' && this.premium()) return { ok: true };
-    return verdict;
+    return canTransfer({ from, toRib: this.selectedRib(), amountMad: this.amountMad(), transferredTodayMad: this.store.transferredTodayMad(from.id) });
   });
 
   protected readonly error = computed(() => {

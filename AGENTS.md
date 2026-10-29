@@ -46,9 +46,18 @@ Cross-lib imports go through the `@atlas/*` aliases only, never relative paths i
 - No `setTimeout` / sleeps in tests. Use `await fixture.whenStable()` or assert store state.
 - **Never edit existing assertions to make a diff pass.** If an assertion is wrong, say so in the PR and stop.
 
+## Security (module 5: AI as the attacker, AI as the reviewer)
+
+- **Never bypass the sanitizer.** No `bypassSecurityTrust*`, no HTML built from user input. Render text; if a subset of markup is wanted, map it to elements in the template (see `label-format.ts`). Lint fails on a bypass.
+- **No secret in client code.** No API key, token or password in `apps/` or `libs/`, not even "temporarily". `npm run scan:secrets` fails the build on anything that looks like one. Keys live behind the backend.
+- **The browser never calls a third party.** Every outside service goes through the backend (`FakeBackend` here, your API in production). Lint fails on a direct `fetch` to an absolute URL.
+- **Every business rule is enforced at the boundary.** The client check (`canTransfer()` in a component) is for the user's screen; the same rule runs in the backend for real. A product request to relax a rule changes the domain and the backend, never a component. "Only the client checks it" is a finding, not a shortcut.
+- **Authorisation before data.** Data reaches a model or a screen as the signed-in user, with that user's rights, never through a service account "for convenience".
+- **Scan every agent diff before a human reads it:** `npm run lint:arch` (the cheap layer) and the model-based security scan (`/claude-security` on the diff, or your tool's equivalent). Findings go into the PR, fixed or explicitly accepted.
+
 ## Before you say you are done
 
-1. `npm run lint:arch` passes (boundaries + house rules)
+1. `npm run lint:arch` passes (boundaries, house rules, secrets scan)
 2. `npm run test` passes **without changed assertions**
 3. `npm run typecheck` passes
 4. The diff is **≤ 300 lines** unless the task file raises the limit
