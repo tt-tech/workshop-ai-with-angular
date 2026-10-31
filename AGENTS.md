@@ -31,6 +31,7 @@ Cross-lib imports go through the `@atlas/*` aliases only, never relative paths i
 
 - New components are **standalone**, use **signals**, `inject()`, `input()`/`output()`, and the new control flow (`@if`, `@for`). No new NgModules. No `*ngIf`/`*ngFor` outside `libs/legacy`. OnPush is Angular's default since v22 — never write `changeDetection:` on a component, and never opt into `Eager`.
 - **Never edit `libs/legacy/**`** unless the task file says `migrate`. Wrap it.
+- Crossing a library boundary needs an ADR link in the PR.
 - No `any`. No defensive guards for states no caller can produce — express the invariant.
 - `computed` over `effect`. Never set state inside an `effect` when a `computed` can derive it. Don't short-circuit signal reads (`a() || b()` hides `b` from tracking).
 - Services expose signals or Observables; they **never subscribe to themselves**. Components don't `.subscribe()` for view data.
