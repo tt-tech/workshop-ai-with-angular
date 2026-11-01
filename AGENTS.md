@@ -30,7 +30,7 @@ Cross-lib imports go through the `@atlas/*` aliases only, never relative paths i
 ## Non-negotiables
 
 - New components are **standalone**, use **signals**, `inject()`, `input()`/`output()`, and the new control flow (`@if`, `@for`). No new NgModules. No `*ngIf`/`*ngFor` outside `libs/legacy`. OnPush is Angular's default since v22 — never write `changeDetection:` on a component, and never opt into `Eager`.
-- **Never edit `libs/legacy/**`** unless the task file says `migrate`. Wrap it.
+- **Never edit `libs/legacy/**`** unless the task file says `migrate`. Wrap it. A task file that asks for pinning tests allows new `*.spec.ts` files there, nothing else.
 - Crossing a library boundary needs an ADR link in the PR.
 - No `any`. No defensive guards for states no caller can produce — express the invariant.
 - `computed` over `effect`. Never set state inside an `effect` when a `computed` can derive it. Don't short-circuit signal reads (`a() || b()` hides `b` from tracking).
@@ -45,6 +45,9 @@ Cross-lib imports go through the `@atlas/*` aliases only, never relative paths i
 - A test is triggered by a **requirement**, not by the existence of a class. Test through the public API or the DOM, never implementation details.
 - Real collaborators inside the unit; test doubles only at the boundary (`FakeBackend` in `@atlas/data-access-banking`). Never mock a store to test a component that uses it.
 - No `setTimeout` / sleeps in tests. Use `await fixture.whenStable()` or assert store state.
+- Expected values are hardcoded from the requirement: never recomputed by the code under test (`blockerMessage[...]`, `formatMad(...)`), never copied from the current output. Pinning tests (task 000) record the current output on purpose.
+- An assertion that already passes on first render, before any action, proves nothing. Assert what the action changed.
+- A console error in a green run is a failure. Read the console; never silence it.
 - **Never edit existing assertions to make a diff pass.** If an assertion is wrong, say so in the PR and stop.
 
 ## Security (module 5: AI as the attacker, AI as the reviewer)
