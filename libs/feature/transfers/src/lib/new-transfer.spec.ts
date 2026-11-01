@@ -1,3 +1,4 @@
+import { Injectable } from '@angular/core';
 import { TestBed } from '@angular/core/testing';
 import { provideRouter, Router, withComponentInputBinding } from '@angular/router';
 import { AccountsStore, FakeBackend } from '@atlas/data-access-banking';
@@ -5,6 +6,7 @@ import type { Account, Beneficiary } from '@atlas/domain';
 import { NewTransfer } from './new-transfer';
 
 // Sociable: the real store and the real domain rules participate; only the boundary (FakeBackend) is replaced.
+@Injectable()
 class InstantBackend extends FakeBackend {
   protected override readonly latencyMs = 0;
   protected override accounts: Account[] = [

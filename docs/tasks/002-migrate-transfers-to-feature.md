@@ -17,7 +17,7 @@ A customer makes a transfer from `/transfers/new/:accountId` exactly as today, s
 - [ ] `npm run lint:arch` passes
 - [ ] `npm run test` passes without changed assertions
 - [ ] `npm run typecheck` passes
-- [ ] `git diff --stat main -- libs/legacy` prints nothing
+- [ ] `git diff --stat m2-start -- libs/legacy ':!*.spec.ts'` prints nothing
 - [ ] On `/transfers/new/a-current`: same fields as today (From with label and balance, Beneficiary select with the first beneficiary preselected, Amount, Label max 35 chars, Confirm button that reads "Sending…" while saving), same validation messages word for word, and on success the app navigates to `/accounts/a-current` with the balance lowered
 - [ ] Every business rule comes from `canTransfer()` in `@atlas/domain`; the messages come from `blockerMessage`. No limits table, no status check, no balance comparison in the component
 - [ ] The `Make a transfer` link on `/accounts/a-current` still lands on the new form (route path unchanged: `transfers/new/:accountId`)

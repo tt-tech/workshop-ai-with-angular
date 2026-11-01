@@ -54,7 +54,7 @@ libs/feature/dashboard        overview route
 libs/feature/accounts         list + detail routes
 libs/feature/requests         list route
 libs/legacy/transfers         NgModule + *ngIf + constructor DI + any — the module-2 migration target
-docs/tasks                    task-file template + tasks 001 (module 1), 002/003 (module 2)
+docs/tasks                    task-file template + tasks 001 (module 1), 000/002/003 (module 2), 005 (receipt)
 exercises                     one file per workshop module
 ```
 

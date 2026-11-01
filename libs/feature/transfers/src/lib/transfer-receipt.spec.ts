@@ -1,9 +1,11 @@
+import { Injectable } from '@angular/core';
 import { TestBed } from '@angular/core/testing';
 import { provideRouter, withComponentInputBinding } from '@angular/router';
 import { AccountsStore, FakeBackend, RatesStore } from '@atlas/data-access-banking';
 import type { Transaction } from '@atlas/domain';
 import { TransferReceipt } from './transfer-receipt';
 
+@Injectable()
 class InstantBackend extends FakeBackend {
   protected override readonly latencyMs = 0;
   protected override transactions: Transaction[] = [

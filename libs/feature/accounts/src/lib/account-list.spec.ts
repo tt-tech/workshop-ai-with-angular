@@ -1,3 +1,4 @@
+import { Injectable } from '@angular/core';
 import { TestBed } from '@angular/core/testing';
 import { provideRouter } from '@angular/router';
 import { AccountsStore, FakeBackend } from '@atlas/data-access-banking';
@@ -5,6 +6,7 @@ import type { Account } from '@atlas/domain';
 import { AccountList } from './account-list';
 
 // Sociable test: the real store participates; only the boundary (FakeBackend) is replaced.
+@Injectable()
 class InstantBackend extends FakeBackend {
   override async getAccounts(): Promise<Account[]> {
     return [
