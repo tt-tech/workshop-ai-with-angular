@@ -4,6 +4,8 @@ The demo repository of the workshop **[Fast and safe: AI in your Angular codebas
 
 ![Atlas Bank overview: balance, recent activity and accounts](docs/screenshots/01-overview.png)
 
+Live demo: https://tt-tech.github.io/workshop-ai-with-angular/ (goes live once GitHub Pages is enabled for this repo; in-memory demo data, resets on reload).
+
 - Angular 22 · Nx · standalone components + signals · zoneless · Vitest
 - Architecture enforced by ESLint module boundaries (and, for non-Nx teams, the same contract in `sheriff.config.ts`)
 - Agent guidance in one place: `AGENTS.md`. Claude Code, Cursor, Copilot and Gemini CLI files only point to it.
