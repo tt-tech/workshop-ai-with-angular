@@ -1,0 +1,50 @@
+// Dev aid "Framework map": which framework renders which part of the screen. Toggled by FrameworkMapToggle (class on <html>).
+:root {
+  --fw-angular: #0f766e;
+  --fw-legacy: #7c3aed;
+  --fw-angularjs: #c2410c;
+}
+
+html.framework-map {
+  [data-framework],
+  atlas-transfer {
+    position: relative;
+    display: block;
+    outline: 2px dashed var(--fw-color);
+    outline-offset: 4px;
+  }
+
+  [data-framework]::before,
+  atlas-transfer::before {
+    content: var(--fw-label);
+    position: absolute;
+    top: -0.75rem;
+    right: 0.5rem;
+    z-index: 10;
+    padding: 0 0.4rem;
+    border-radius: 3px;
+    background: var(--fw-color);
+    color: #fff;
+    font: 500 0.6875rem/1.4 var(--mono);
+  }
+
+  [data-framework='angular'] {
+    --fw-color: var(--fw-angular);
+    --fw-label: 'Angular standalone';
+  }
+
+  atlas-transfer {
+    --fw-color: var(--fw-legacy);
+    --fw-label: 'Angular NgModule (legacy)';
+  }
+
+  [data-framework='angularjs'] {
+    --fw-color: var(--fw-angularjs);
+    --fw-label: 'AngularJS 1.8';
+  }
+
+  [data-framework='angularjs'] atlas-amount {
+    outline: 2px dashed var(--fw-angular);
+    outline-offset: 1px;
+  }
+}

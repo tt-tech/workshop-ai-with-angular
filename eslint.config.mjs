@@ -12,7 +12,8 @@ const depConstraints = [
   { sourceTag: "type:ui", onlyDependOnLibsWithTags: ["type:ui", "type:domain"] },
   { sourceTag: "type:feature", onlyDependOnLibsWithTags: ["type:feature", "type:ui", "type:data-access", "type:domain"] },
   { sourceTag: "type:legacy", onlyDependOnLibsWithTags: ["type:legacy", "type:data-access", "type:domain"] },
-  { sourceTag: "type:app", onlyDependOnLibsWithTags: ["type:feature", "type:ui", "type:data-access", "type:domain", "type:legacy"] },
+  { sourceTag: "type:legacy-ajs", onlyDependOnLibsWithTags: ["type:legacy-ajs", "type:ui", "type:data-access", "type:domain"] },
+  { sourceTag: "type:app", onlyDependOnLibsWithTags: ["type:feature", "type:ui", "type:data-access", "type:domain", "type:legacy", "type:legacy-ajs"] },
 ];
 
 export default [
@@ -69,6 +70,15 @@ export default [
       "@typescript-eslint/no-inferrable-types": "off",
       "@angular-eslint/prefer-standalone": "off",
       "@angular-eslint/prefer-inject": "off",
+      "max-lines": "off",
+    },
+  },
+  {
+    // The AngularJS corner is frozen the same way. Its templates are strings: no Angular template rule ever reads them.
+    files: ["libs/angularjs/**/*.ts"],
+    ignores: ["**/*-host.ts", "**/*.spec.ts"],
+    rules: {
+      "@typescript-eslint/no-explicit-any": "off",
       "max-lines": "off",
     },
   },

@@ -20,6 +20,7 @@
         "browser": "apps/atlas/src/main.ts",
         "tsConfig": "apps/atlas/tsconfig.app.json",
         "inlineStyleLanguage": "scss",
+        "allowedCommonJsDependencies": ["angular"],
         "assets": [
           {
             "glob": "**/*",
@@ -27,7 +28,8 @@
           }
         ],
         "styles": [
-          "apps/atlas/src/styles.scss"
+          "apps/atlas/src/styles.scss",
+          "apps/atlas/src/framework-map.scss"
         ]
       },
       "configurations": {

@@ -8,6 +8,6 @@ describe('App', () => {
     const fixture = TestBed.createComponent(App);
     fixture.detectChanges();
     const links = Array.from(fixture.nativeElement.querySelectorAll('nav a:not(.brand)')).map((a) => (a as HTMLElement).textContent?.trim());
-    expect(links).toEqual(['Overview', 'Accounts', 'Requests']);
+    expect(links).toEqual(['Overview', 'Accounts', 'Requests', 'Beneficiaries']);
   });
 });
