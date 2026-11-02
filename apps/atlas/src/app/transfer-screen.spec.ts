@@ -46,7 +46,11 @@ const open = async (url: string) => {
     harness.detectChanges();
   };
   const confirm = () => {
-    screen.querySelector('form')?.dispatchEvent(new Event('submit'));
+    const button = Array.from(screen.querySelectorAll('button')).find(
+      (b) => b.textContent?.trim() === 'Confirm transfer',
+    );
+    if (!button) throw new Error('No button named "Confirm transfer"');
+    button.click();
     harness.detectChanges();
   };
   await until(() => field('Amount (MAD)'));
