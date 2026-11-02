@@ -14,16 +14,18 @@ export const sheriffConfig: SheriffConfig = {
     'libs/ui/src': ['type:ui'],
     'libs/feature/<name>/src': ['type:feature'],
     'libs/legacy/<name>/src': ['type:legacy'],
+    'libs/angularjs/<name>/src': ['type:legacy-ajs'],
   },
   depRules: {
     // apps/atlas/src/main.ts and the app shell live at the root (no index.ts): the app may mount anything
-    root: ['noTag', 'type:app', 'type:feature', 'type:ui', 'type:data-access', 'type:domain', 'type:legacy'],
+    root: ['noTag', 'type:app', 'type:feature', 'type:ui', 'type:data-access', 'type:domain', 'type:legacy', 'type:legacy-ajs'],
     noTag: ['noTag', 'root'],
     'type:domain': noDependencies,
     'type:data-access': [sameTag, 'type:domain'],
     'type:ui': [sameTag, 'type:domain'],
     'type:feature': [sameTag, 'type:ui', 'type:data-access', 'type:domain'],
     'type:legacy': [sameTag, 'type:data-access', 'type:domain'],
-    'type:app': ['type:feature', 'type:ui', 'type:data-access', 'type:domain', 'type:legacy'],
+    'type:legacy-ajs': [sameTag, 'type:ui', 'type:data-access', 'type:domain'],
+    'type:app': ['type:feature', 'type:ui', 'type:data-access', 'type:domain', 'type:legacy', 'type:legacy-ajs'],
   },
 };
