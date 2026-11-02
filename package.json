@@ -39,6 +39,7 @@
     "@swc-node/register": "1.11.1",
     "@swc/core": "1.15.8",
     "@swc/helpers": "0.5.18",
+    "@types/angular": "~1.8.9",
     "@types/node": "^24.0.0",
     "@typescript-eslint/utils": "^8.58.0",
     "@vitest/coverage-v8": "~4.1.0",
@@ -62,6 +63,8 @@
     "@angular/forms": "~22.1.0",
     "@angular/platform-browser": "~22.1.0",
     "@angular/router": "~22.1.0",
+    "@angular/upgrade": "~22.1.0",
+    "angular": "1.8.3",
     "rxjs": "~7.8.0"
   }
 }
