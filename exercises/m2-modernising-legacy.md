@@ -68,6 +68,7 @@ git diff --stat m2-start -- libs/legacy ':!*.spec.ts'     # must print nothing u
    > Work from docs/tasks/002-migrate-transfers-to-feature.md.
 
    Nothing else.
+
 3. Let it finish. Run the checkpoint commands. Then the tester's check: `/transfers/new/a-current` shows the same fields as before, "Enter an amount above 0 MAD." on an empty amount, "The balance does not cover this amount." above the balance, and a valid transfer lands on `/accounts/a-current` with the balance lowered (on `main`, since the PRODUCT-412 receipt, it lands on `/transfers/receipt/:id` instead). Try `/transfers/new/a-joint`, enter 100 and confirm: "This account is blocked. Contact your advisor to unblock it." (the amount check comes first in `canTransfer()`, as it did in the legacy `validate()`).
 4. Review the diff with these questions:
    - Does `new-transfer.ts` mirror `libs/feature/accounts/src/lib/account-detail.ts`? `input.required<string>()` named `accountId`, `inject(AccountsStore)`, `computed` for the account, `load()` in `ngOnInit`.
@@ -82,7 +83,7 @@ git diff --stat m2-start -- libs/legacy ':!*.spec.ts'     # must print nothing u
 
    > While you are at it, replace the *ngIf in libs/legacy/transfers/src/lib/transfer.component.html with @if.
 
-   Watch. With `AGENTS.md` loaded the agent should refuse or ask for a `migrate` task file; the task file's out-of-scope line says the same. If it edits anyway, run `git diff --stat m2-start -- libs/legacy ':!*.spec.ts'`. That line is not empty, and nothing in `lint:arch` will tell you: the ESLint override for `libs/legacy/**` *relaxes* rules there, it does not forbid edits. The fence for legacy is the task file plus that one `git diff` line in the checkpoint. Revert the legacy edit: `git checkout m2-start -- libs/legacy/transfers/src/lib/transfer.component.html`.
+   Watch. With `AGENTS.md` loaded the agent should refuse or ask for a `migrate` task file; the task file's out-of-scope line says the same. If it edits anyway, run `git diff --stat m2-start -- libs/legacy ':!*.spec.ts'`. That line is not empty, and nothing in `lint:arch` will tell you: the ESLint override for `libs/legacy/**` _relaxes_ rules there, it does not forbid edits. The fence for legacy is the task file plus that one `git diff` line in the checkpoint. Revert the legacy edit: `git checkout m2-start -- libs/legacy/transfers/src/lib/transfer.component.html`.
 
 6. Tag your result if you want to compare later: `git tag m2/<your-tool>`. The reference result is `m2-migrated`.
 
@@ -115,7 +116,7 @@ Three passes per test, in this order. Record the verdict: **delete**, **rewrite*
 - [ ] The fake does not emit the real sequence: `getAccounts` overridden but `getBeneficiaries` still hits the 250 ms delay, so the test "needs" a sleep. Fix it in the shared fake, once, never per test
 - [ ] It tests a state no user can reach: the "failed transfer" test forces `FakeBackend.transfer` to throw for an account that the form could never submit. Delete, or turn it into a store test if the requirement exists
 
-**(b) The delete question** — for every `expect`: *what could I delete from production code and still see green?* Three cases you will find:
+**(b) The delete question** — for every `expect`: _what could I delete from production code and still see green?_ Three cases you will find:
 
 - "renders the form" passes if `submit()` does nothing
 - "shows the beneficiary select" passes with zero options
@@ -171,7 +172,7 @@ Compare with the scene-1 plan that started with "delete": here deletion is the l
 
 ## Take-home
 
-**An ADR per decision-changing behaviour.** One file, four headings: *Context* (what was true and why it hurt), *Decision* (one sentence, in the imperative), *Consequences* (what becomes easier, what becomes harder, what is now forbidden), and the rule that keeps them honest: **an ADR is amended in the same change that invalidates it**, never in a later cleanup. Today's would be: "Transfer rules live in `@atlas/domain` (`canTransfer`); a component that re-implements one is a bug, not a shortcut." Ten lines. Put them in `docs/adr/`.
+**An ADR per decision-changing behaviour.** One file, four headings: _Context_ (what was true and why it hurt), _Decision_ (one sentence, in the imperative), _Consequences_ (what becomes easier, what becomes harder, what is now forbidden), and the rule that keeps them honest: **an ADR is amended in the same change that invalidates it**, never in a later cleanup. Today's would be: "Transfer rules live in `@atlas/domain` (`canTransfer`); a component that re-implements one is a bug, not a shortcut." Ten lines. Put them in `docs/adr/`.
 
 **Name the store you mean.** "The store" is ambiguous in every migration. Three tiers, and every plan or task file says which:
 

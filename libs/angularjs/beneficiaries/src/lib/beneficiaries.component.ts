@@ -35,17 +35,27 @@ export const beneficiariesScreen = {
           })
           .catch((e: any) => {
             this.loading = false;
-            this.loadError = e && e.message ? e.message : 'Could not load beneficiaries.';
+            this.loadError =
+              e && e.message ? e.message : 'Could not load beneficiaries.';
           });
       };
 
       this.refresh = () => {
         const term = (this.search || '').toLowerCase().trim();
         let list = this.all;
-        if (term) list = $filter('filter')(list, (b: any) => b.search.indexOf(term) > -1);
-        list = $filter('orderBy')(list, this.sortKey === 'sent' ? 'sentMad' : 'name');
+        if (term)
+          list = $filter('filter')(
+            list,
+            (b: any) => b.search.indexOf(term) > -1,
+          );
+        list = $filter('orderBy')(
+          list,
+          this.sortKey === 'sent' ? 'sentMad' : 'name',
+        );
         this.visible = list;
-        this.countText = beneficiaryService.countText(this.all.length + this.pending.length);
+        this.countText = beneficiaryService.countText(
+          this.all.length + this.pending.length,
+        );
         this.totalSentText = beneficiaryService.totalSentText();
       };
 
@@ -53,12 +63,12 @@ export const beneficiariesScreen = {
         () => this.search,
         (now: any, before: any) => {
           if (now !== before) this.refresh();
-        }
+        },
       );
 
       $scope.$watchCollection(
         () => this.pending,
-        () => this.refresh()
+        () => this.refresh(),
       );
 
       this.toggleSort = () => {
@@ -83,7 +93,9 @@ export const beneficiariesScreen = {
           })
           .catch((message: any) => {
             this.formError = message;
-            beneficiaryService.focus(message.indexOf('RIB') > -1 ? 'lb-rib' : 'lb-name');
+            beneficiaryService.focus(
+              message.indexOf('RIB') > -1 ? 'lb-rib' : 'lb-name',
+            );
           })
           .finally(() => {
             this.saving = false;

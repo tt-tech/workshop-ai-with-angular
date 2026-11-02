@@ -7,7 +7,9 @@ const setup = () => {
   TestBed.configureTestingModule({ imports: [FrameworkMapToggle] });
   const fixture = TestBed.createComponent(FrameworkMapToggle);
   fixture.detectChanges();
-  const button = fixture.nativeElement.querySelector('button') as HTMLButtonElement;
+  const button = fixture.nativeElement.querySelector(
+    'button',
+  ) as HTMLButtonElement;
   const click = () => {
     button.click();
     fixture.detectChanges();

@@ -18,7 +18,16 @@ export const sheriffConfig: SheriffConfig = {
   },
   depRules: {
     // apps/atlas/src/main.ts and the app shell live at the root (no index.ts): the app may mount anything
-    root: ['noTag', 'type:app', 'type:feature', 'type:ui', 'type:data-access', 'type:domain', 'type:legacy', 'type:legacy-ajs'],
+    root: [
+      'noTag',
+      'type:app',
+      'type:feature',
+      'type:ui',
+      'type:data-access',
+      'type:domain',
+      'type:legacy',
+      'type:legacy-ajs',
+    ],
     noTag: ['noTag', 'root'],
     'type:domain': noDependencies,
     'type:data-access': [sameTag, 'type:domain'],
@@ -26,6 +35,13 @@ export const sheriffConfig: SheriffConfig = {
     'type:feature': [sameTag, 'type:ui', 'type:data-access', 'type:domain'],
     'type:legacy': [sameTag, 'type:data-access', 'type:domain'],
     'type:legacy-ajs': [sameTag, 'type:ui', 'type:data-access', 'type:domain'],
-    'type:app': ['type:feature', 'type:ui', 'type:data-access', 'type:domain', 'type:legacy', 'type:legacy-ajs'],
+    'type:app': [
+      'type:feature',
+      'type:ui',
+      'type:data-access',
+      'type:domain',
+      'type:legacy',
+      'type:legacy-ajs',
+    ],
   },
 };

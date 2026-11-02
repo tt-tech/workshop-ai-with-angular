@@ -4,16 +4,11 @@
   "projectType": "application",
   "prefix": "atlas",
   "sourceRoot": "apps/atlas/src",
-  "tags": [
-    "scope:atlas",
-    "type:app"
-  ],
+  "tags": ["scope:atlas", "type:app"],
   "targets": {
     "build": {
       "executor": "@angular/build:application",
-      "outputs": [
-        "{options.outputPath}"
-      ],
+      "outputs": ["{options.outputPath}"],
       "defaultConfiguration": "production",
       "options": {
         "outputPath": "dist/apps/atlas",

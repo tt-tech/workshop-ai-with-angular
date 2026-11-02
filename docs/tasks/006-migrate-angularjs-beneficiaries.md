@@ -1,19 +1,23 @@
 # Task 006: Rebuild the AngularJS beneficiaries screen as a modern feature beside it
 
 ## Goal
+
 A customer sees, searches and adds beneficiaries on `/beneficiaries` exactly as today, served by a standalone, signals-based feature lib instead of the AngularJS module in `libs/angularjs/beneficiaries`. The AngularJS lib stays in the tree, untouched, until a later task deletes it.
 
 ## Scope
+
 - Allowed to change: `apps/atlas` (the `beneficiaries` entry in `apps/atlas/src/app/app.routes.ts` only), `tsconfig.base.json` (one new `@atlas/feature-beneficiaries` path)
 - New files allowed in: `libs/feature/beneficiaries` (new lib, tags `scope:atlas` + `type:feature`, same scaffolding as `libs/feature/requests`)
 
 ## Out of scope
+
 - `libs/angularjs/**`: this is not a `migrate` task. Build beside it, do not edit, do not delete
 - `libs/ui`: `Amount` stays exactly as it is. The AngularJS template still renders it by tag string until the AngularJS lib is deleted (see step 0)
 - `libs/data-access/*`: `AccountsStore` already has `beneficiaries`, `accounts` and `transactions`. The "waiting for activation" list is view-local, as it is today
 - `libs/domain`: `formatRib` and `formatMad` already exist; the AngularJS service re-implements one and drifts from the other
 
 ## Done when
+
 - [ ] Step 0 is written into the PR before any code: every `downgradeComponent` and `downgradeInjectable` registration, and every AngularJS template that uses each registered name (see notes)
 - [ ] `npm run lint:arch` passes
 - [ ] `npm run test` passes without changed assertions
@@ -24,6 +28,7 @@ A customer sees, searches and adds beneficiaries on `/beneficiaries` exactly as 
 - [ ] Diff ≤ 300 lines, not counting the generator's scaffolding
 
 ## Notes for the agent
+
 - Step 0, the hidden readers. The TypeScript compiler cannot see AngularJS templates. List them:
   - `grep -rn "downgradeComponent\|downgradeInjectable" libs apps` gives the registrations and their AngularJS names (`atlasAmount`, `accountsStore`, `ngRouter`)
   - for each component name, grep its kebab-case tag (`atlas-amount`) in every AngularJS template string; for each injectable name, grep the string (`'accountsStore'`) in every AngularJS factory, service and controller annotation

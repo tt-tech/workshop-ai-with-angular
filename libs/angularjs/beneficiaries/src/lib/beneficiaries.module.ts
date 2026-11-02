@@ -1,6 +1,10 @@
 import angular from 'angular';
 import { Router } from '@angular/router';
-import { downgradeComponent, downgradeInjectable, setAngularJSGlobal } from '@angular/upgrade/static';
+import {
+  downgradeComponent,
+  downgradeInjectable,
+  setAngularJSGlobal,
+} from '@angular/upgrade/static';
 import { AccountsStore } from '@atlas/data-access-banking';
 import { Amount } from '@atlas/ui';
 import { beneficiariesScreen } from './beneficiaries.component';
@@ -10,7 +14,10 @@ setAngularJSGlobal(angular);
 
 export const beneficiariesModule = angular
   .module('atlas.beneficiaries', [])
-  .directive('atlasAmount', downgradeComponent({ component: Amount }) as angular.IDirectiveFactory)
+  .directive(
+    'atlasAmount',
+    downgradeComponent({ component: Amount }) as angular.IDirectiveFactory,
+  )
   .factory('accountsStore', downgradeInjectable(AccountsStore))
   .factory('ngRouter', downgradeInjectable(Router))
   .factory('beneficiaryService', beneficiaryService)
