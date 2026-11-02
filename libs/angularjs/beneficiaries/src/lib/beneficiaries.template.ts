@@ -1,4 +1,4 @@
-// LEGACY (AngularJS 1.8) — frozen. <atlas-amount> below is the downgraded Angular component from @atlas/ui.
+// LEGACY (AngularJS 1.8), frozen. <atlas-amount> below is the downgraded Angular component from @atlas/ui.
 export const beneficiariesTemplate = `
 <section class="lb">
   <header class="lb-header">

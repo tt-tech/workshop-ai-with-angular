@@ -2,7 +2,7 @@ import angular from 'angular';
 import type { Router } from '@angular/router';
 import type { AccountsStore } from '@atlas/data-access-banking';
 
-// LEGACY (AngularJS 1.8) — frozen. One service for everything the beneficiaries screen needs:
+// LEGACY (AngularJS 1.8), frozen. One service for everything the beneficiaries screen needs:
 // fetching, caching, business rules, formatting, focus and highlight, navigation.
 // Do not touch outside a task file that says "migrate".
 export const beneficiaryService = [

@@ -1,6 +1,6 @@
 import { beneficiariesTemplate } from './beneficiaries.template';
 
-// LEGACY (AngularJS 1.8) — frozen. One controller for the whole screen: loading, search, sort, the add form,
+// LEGACY (AngularJS 1.8), frozen. One controller for the whole screen: loading, search, sort, the add form,
 // counters and navigation, with watchers keeping copies of the same list in sync.
 // Do not touch outside a task file that says "migrate".
 export const beneficiariesScreen = {
