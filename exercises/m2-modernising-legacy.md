@@ -143,9 +143,18 @@ Read the console output of the final green run. A stray error from `FakeBackend`
 
 ---
 
-## Scene 4 — Delete the legacy lib (15 min, optional)
+## Scene 4 — Delete the legacy lib (20 min, optional)
 
-**Goal:** see what makes a deletion safe.
+**Goal:** see what makes a deletion safe, and what happens when it is too early.
+
+0. Delete too early first, in a throwaway copy on `m2-start` (before the route flip):
+
+   ```bash
+   git worktree add ../too-early m2-start && cd ../too-early && ln -s "$OLDPWD/node_modules" node_modules
+   rm -rf libs/legacy/transfers && npm run typecheck
+   ```
+
+   It fails: `app.routes.ts(7,51): error TS2307: Cannot find module '@atlas/legacy-transfers'`. The compiler found the one reader the lib still had, the route. Clean up with `cd - && git worktree remove --force ../too-early`. Now do it at the right time, after the flip:
 
 1. Before anything: `grep -rn "@atlas/legacy-transfers" apps libs`. After scene 2 it prints nothing — the route was the only importer, and the `type:legacy` rule in `eslint.config.mjs` never allowed a `type:feature` lib to import it. That is the whole reason this step is small.
 2. Read `docs/tasks/003-delete-legacy-transfers.md`. It says `migrate` in its title: this is the one task that may touch `libs/legacy/**`.
@@ -153,7 +162,7 @@ Read the console output of the final green run. A stray error from `FakeBackend`
 
    > Work from docs/tasks/003-delete-legacy-transfers.md.
 
-4. Run the checkpoint commands. `git diff --stat m2-start -- libs/legacy` is now all deletions and that is correct. `lint:arch` green is the proof: nothing modern imported the lib. Check that the `@atlas/legacy-transfers` path in `tsconfig.base.json`, the two `libs/legacy/**` override blocks in `eslint.config.mjs` and the `libs/legacy/<name>/src` line in `sheriff.config.ts` went with it.
+4. Run the checkpoint commands. `git diff --stat m2-start -- libs/legacy` is now all deletions and that is correct. The proof comes in two parts: `lint:arch` never allowed anything but the app to import a `type:legacy` lib, and a green `typecheck` after the delete shows the app no longer does either. Same delete as step 0, no error this time. Check that the `@atlas/legacy-transfers` path in `tsconfig.base.json`, the two `libs/legacy/**` override blocks in `eslint.config.mjs` and the `libs/legacy/<name>/src` line in `sheriff.config.ts` went with it.
 5. Open `/transfers/new/a-current` one last time.
 
 Compare with the scene-1 plan that started with "delete": here deletion is the last step, it is its own task file, and the diff has no logic in it.

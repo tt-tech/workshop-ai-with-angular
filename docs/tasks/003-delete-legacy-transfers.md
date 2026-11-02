@@ -14,9 +14,9 @@
 
 ## Done when
 - [ ] `grep -rn "legacy-transfers\|libs/legacy" apps libs tsconfig.base.json eslint.config.mjs sheriff.config.ts` prints nothing
-- [ ] `npm run lint:arch` passes — it is the proof nothing modern ever imported the lib (`type:legacy` was importable by `type:app` only)
+- [ ] `npm run lint:arch` passes (`type:legacy` was only ever importable by `type:app`, so nothing modern can depend on the lib)
 - [ ] `npm run test` passes without changed assertions
-- [ ] `npm run typecheck` passes
+- [ ] `npm run typecheck` passes: the proof that the app no longer imports the lib either
 - [ ] `/transfers/new/a-current` still shows the transfer form and a transfer still lands on `/accounts/a-current`
 - [ ] Diff ≤ 300 lines (deletions do not count)
 
