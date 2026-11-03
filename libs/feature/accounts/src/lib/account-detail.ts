@@ -1,6 +1,7 @@
 import {
   Component,
   computed,
+  DOCUMENT,
   inject,
   input,
   OnInit,
@@ -15,8 +16,12 @@ import {
 } from '@atlas/domain';
 import { AccountsStore, CardsStore } from '@atlas/data-access-banking';
 import { Amount, MadPipe, PageHeader, StatusBadge } from '@atlas/ui';
+import { toCsv } from './transactions-csv';
 
 const allCategories = 'all';
+const csvMimeType = 'text/csv;charset=utf-8';
+const utf8Bom = '\uFEFF';
+const csvFileSuffix = '-transactions.csv';
 
 @Component({
   selector: 'atlas-account-detail',
@@ -34,15 +39,24 @@ const allCategories = 'all';
         <section class="card card--flush">
           <div class="card__header">
             <h2 class="card__title">Transactions</h2>
-            <label class="filter">
-              Category
-              <select (change)="category.set($any($event.target).value)">
-                <option [value]="allOption">All</option>
-                @for (c of categories(); track c) {
-                  <option [value]="c">{{ categoryLabel[c] }}</option>
-                }
-              </select>
-            </label>
+            <div class="tools">
+              <label class="filter">
+                Category
+                <select (change)="category.set($any($event.target).value)">
+                  <option [value]="allOption">All</option>
+                  @for (c of categories(); track c) {
+                    <option [value]="c">{{ categoryLabel[c] }}</option>
+                  }
+                </select>
+              </label>
+              <button
+                type="button"
+                class="button button--ghost"
+                (click)="exportCsv()"
+              >
+                Export CSV
+              </button>
+            </div>
           </div>
           <table class="table">
             <tbody>
@@ -117,6 +131,12 @@ const allCategories = 'all';
       gap: var(--space-6);
       align-items: start;
     }
+    .tools {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: var(--space-3);
+    }
     .filter {
       display: flex;
       align-items: center;
@@ -170,6 +190,7 @@ export class AccountDetail implements OnInit {
 
   private readonly accounts = inject(AccountsStore);
   private readonly cardsStore = inject(CardsStore);
+  private readonly document = inject(DOCUMENT);
 
   protected readonly allOption = allCategories;
   protected readonly category = signal<string>(allCategories);
@@ -201,6 +222,18 @@ export class AccountDetail implements OnInit {
       ? all
       : all.filter((t) => t.category === category);
   });
+
+  protected exportCsv(): void {
+    const blob = new Blob([utf8Bom, toCsv(this.filtered())], {
+      type: csvMimeType,
+    });
+    const url = URL.createObjectURL(blob);
+    const link = this.document.createElement('a');
+    link.href = url;
+    link.download = `${this.id()}${csvFileSuffix}`;
+    link.click();
+    URL.revokeObjectURL(url);
+  }
 
   ngOnInit(): void {
     void this.accounts.load();
