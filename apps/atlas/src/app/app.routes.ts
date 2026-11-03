@@ -25,13 +25,8 @@ export const appRoutes: Route[] = [
       ),
   },
   {
-    path: 'transfers/legacy',
-    loadChildren: () =>
-      import('@atlas/legacy-transfers').then((m) => m.LegacyTransfersModule),
-  },
-  {
     path: 'transfers',
     loadChildren: () =>
-      import('@atlas/feature-transfers').then((m) => m.transfersRoutes),
+      import('@atlas/legacy-transfers').then((m) => m.LegacyTransfersModule),
   },
 ];
