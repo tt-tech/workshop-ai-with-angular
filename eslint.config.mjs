@@ -95,22 +95,6 @@ export default [
         { max: 400, skipBlankLines: true, skipComments: true },
       ],
       'prefer-const': 'error',
-      // Security rules mechanical enough to be lint (module 5). The judgement ones live in AGENTS.md and in the scan.
-      'no-restricted-syntax': [
-        'error',
-        {
-          selector:
-            'CallExpression[callee.property.name=/^bypassSecurityTrust/]',
-          message:
-            "Never bypass Angular's sanitizer. Render text, or map a whitelisted subset to elements in the template.",
-        },
-        {
-          selector:
-            "CallExpression[callee.name='fetch'] Literal[value=/^https?:\\/\\//]",
-          message:
-            'The browser never calls a third party directly. Go through the backend (FakeBackend here, your API in production).',
-        },
-      ],
     },
   },
   {

@@ -28,6 +28,6 @@ After a transfer, the customer lands on a receipt: amount in MAD with the EUR eq
 
 ## Notes for the agent
 
-- Closest analogue: `libs/feature/accounts/src/lib/account-detail.ts` for the page shape; `AccountsStore` for the store pattern; `RatesStore` is the model for a tiny store over one backend call
+- Closest analogue: `libs/feature/accounts/src/lib/account-detail.ts` for the page shape; `AccountsStore` for the store pattern; `CardsStore` is the model for a tiny store over one backend call
 - Render formatting by mapping a whitelisted subset to elements in the template (`label-format.ts`), never by building HTML from the label
 - Reuse `formatMad` through `MadPipe`; do not format money in the component
