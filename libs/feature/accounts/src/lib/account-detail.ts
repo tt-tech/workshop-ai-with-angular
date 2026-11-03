@@ -8,6 +8,7 @@ import {
 } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import {
+  blockerMessage,
   categoryLabel,
   formatRib,
   packageById,
@@ -25,10 +26,18 @@ const allCategories = 'all';
     @let a = account();
     @if (a) {
       <atlas-page-header [title]="a.label" [subtitle]="a.balanceMad | mad">
-        <a class="button" [routerLink]="['/transfers/new', a.id]"
-          >Make a transfer</a
-        >
+        @if (a.status !== 'blocked') {
+          <a class="button" [routerLink]="['/transfers/new', a.id]"
+            >Make a transfer</a
+          >
+        }
       </atlas-page-header>
+
+      @if (a.status === 'blocked') {
+        <p class="alert alert--warning blocked" role="status">
+          {{ blockedMessage }}
+        </p>
+      }
 
       <div class="columns">
         <section class="card card--flush">
@@ -111,6 +120,9 @@ const allCategories = 'all';
     }
   `,
   styles: `
+    .blocked {
+      margin-bottom: var(--space-6);
+    }
     .columns {
       display: grid;
       grid-template-columns: minmax(0, 1.7fr) minmax(0, 1fr);
@@ -175,6 +187,7 @@ export class AccountDetail implements OnInit {
   protected readonly category = signal<string>(allCategories);
   protected readonly categoryLabel = categoryLabel;
   protected readonly formatRib = formatRib;
+  protected readonly blockedMessage = blockerMessage['blocked-account'];
 
   protected readonly account = computed(() => this.accounts.byId(this.id())());
   protected readonly pkg = computed(() =>
