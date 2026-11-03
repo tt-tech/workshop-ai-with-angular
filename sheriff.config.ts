@@ -13,7 +13,6 @@ export const sheriffConfig: SheriffConfig = {
     'libs/data-access/<name>/src': ['type:data-access'],
     'libs/ui/src': ['type:ui'],
     'libs/feature/<name>/src': ['type:feature'],
-    'libs/legacy/<name>/src': ['type:legacy'],
     'libs/angularjs/<name>/src': ['type:legacy-ajs'],
   },
   depRules: {

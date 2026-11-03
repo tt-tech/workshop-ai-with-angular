@@ -28,8 +28,7 @@
       "@atlas/feature-transfers": ["./libs/feature/transfers/src/index.ts"],
       "@atlas/angularjs-beneficiaries": [
         "./libs/angularjs/beneficiaries/src/index.ts"
-      ],
-      "@atlas/legacy-transfers": ["./libs/legacy/transfers/src/index.ts"]
+      ]
     }
   },
   "exclude": ["node_modules", "tmp"]

@@ -114,30 +114,12 @@ export default [
     },
   },
   {
-    // The legacy corner is frozen: old code stays as-is until a task file says "migrate".
-    files: ['libs/legacy/**/*.ts'],
-    rules: {
-      '@typescript-eslint/no-explicit-any': 'off',
-      '@typescript-eslint/no-inferrable-types': 'off',
-      '@angular-eslint/prefer-standalone': 'off',
-      '@angular-eslint/prefer-inject': 'off',
-      'max-lines': 'off',
-    },
-  },
-  {
     // The AngularJS corner is frozen the same way. Its templates are strings: no Angular template rule ever reads them.
     files: ['libs/angularjs/**/*.ts'],
     ignores: ['**/*-host.ts', '**/*.spec.ts'],
     rules: {
       '@typescript-eslint/no-explicit-any': 'off',
       'max-lines': 'off',
-    },
-  },
-  {
-    files: ['libs/legacy/**/*.html'],
-    rules: {
-      '@angular-eslint/template/prefer-control-flow': 'off',
-      '@angular-eslint/template/label-has-associated-control': 'off',
     },
   },
   {
