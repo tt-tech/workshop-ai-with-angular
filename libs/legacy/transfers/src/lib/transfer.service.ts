@@ -17,6 +17,6 @@ export class TransferService {
   }
 
   transfer(accountId: string, toRib: string, amount: number, label: string): Observable<void> {
-    return from(this.store.transfer(accountId, toRib, amount, label));
+    return from(this.store.transfer(accountId, toRib, amount, label)).pipe(map(() => undefined));
   }
 }
