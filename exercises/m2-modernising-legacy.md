@@ -1,6 +1,6 @@
 # Module 2 — Modernising legacy Angular with agents
 
-Half a day. One legacy module, migrated beside itself, deleted last. You need: module 1 done (or at least `AGENTS.md` read once), the repo on `m2-start`, `npm install` done, one AI coding agent installed with a key.
+Half a day. One legacy module, migrated beside itself, deleted last. You need: module 1 done (or at least `AGENTS.md` read once), the repo on `main`, `npm install` done, one AI coding agent installed with a key.
 
 The target is `libs/legacy/transfers`: an `NgModule` with `RouterModule.forChild`, a `standalone: false` component using `*ngIf`/`*ngFor`, constructor injection, a `Subscription[]`, three `markForCheck()` calls, `any` everywhere, and a `limits` table that duplicates `packages[].dailyTransferLimitMad` from `libs/domain`. Read it before you start (five files under `libs/legacy/transfers/src`, ten minutes). Section 3 of `docs/architecture.md` is the diagram.
 
@@ -10,8 +10,8 @@ Checkpoint commands, used after every scene:
 npm run lint:arch                        # boundaries + house rules
 npm run test                             # Vitest, all projects
 npm run typecheck
-git diff --stat m2-start                                  # how big was that?
-git diff --stat m2-start -- libs/legacy ':!*.spec.ts'     # must print nothing until scene 4
+git diff --stat main                                      # how big was that?
+git diff --stat main -- libs/legacy ':!*.spec.ts'         # must print nothing until scene 4
 ```
 
 ---
@@ -20,20 +20,20 @@ git diff --stat m2-start -- libs/legacy ':!*.spec.ts'     # must print nothing u
 
 **Goal:** a photograph of the legacy module as tests, before any migration step, so every later step can be compared against it.
 
-1. `git checkout m2-start`. Task 000 was written after that tag, so bring it in from `main`: `git show main:docs/tasks/000-pin-legacy-transfers.md > docs/tasks/000-pin-legacy-transfers.md`. Read it: new `*.spec.ts` files only, nothing else may change.
+1. `git switch -c m2/<your-tool> main`. Read `docs/tasks/000-pin-legacy-transfers.md`: new `*.spec.ts` files only, nothing else may change.
 2. Paste, verbatim:
 
    > Read AGENTS.md and docs/tasks/000-pin-legacy-transfers.md. Write characterisation tests for libs/legacy/transfers/src/lib/transfer.component.ts validate() and for TransferService. Do not modify any file that is not a new *.spec.ts. One it() per rule or branch, named for the behaviour it records. Assert hardcoded strings and numbers. Where the current behaviour looks like a bug, keep the test true to the current behaviour and add `// TODO 000: looks wrong because …` above it. Run npm run test and report the count.
 
-3. Checkpoint: `npm run test` green, and `git diff --stat m2-start -- ':!*.spec.ts'` prints nothing. If it prints anything, the agent "fixed" the code it was asked to photograph. Revert and say so in the prompt.
-4. Read the `TODO 000` comments. That is the bug list of the legacy module, written by something that read every branch. The reference specs are on `main`: `libs/legacy/transfers/src/lib/transfer.component.spec.ts` (nine cases for `validate()`, one TODO: the daily limit ignores earlier transfers today) and `libs/legacy/transfers/src/lib/transfer.service.spec.ts` (five cases for `TransferService`, one TODO: the backend then rejects what `validate()` let through).
+3. Checkpoint: `npm run test` green, and `git diff --stat main -- ':!*.spec.ts'` prints nothing. If it prints anything, the agent "fixed" the code it was asked to photograph. Revert and say so in the prompt.
+4. Read the `TODO 000` comments. That is the bug list of the legacy module, written by something that read every branch. The reference specs are on `track1/m2-ngmodule-solution`: `libs/legacy/transfers/src/lib/transfer.component.spec.ts` (nine cases for `validate()`, one TODO: the daily limit ignores earlier transfers today) and `libs/legacy/transfers/src/lib/transfer.service.spec.ts` (five cases for `TransferService`, one TODO: the backend then rejects what `validate()` let through).
 5. Keep these tests running through scenes 2 to 4. After scene 2, run them against the new component's messages through the DOM: every green is a behaviour preserved, every red is a decision for the PR.
 
 ## Scene 1 — Ask the agent for a plan, not code (20 min)
 
 **Goal:** see the plan an agent proposes when nobody stops it, then correct it before a line is written.
 
-1. `git checkout m2-start`.
+1. Start again from `main` (`git switch -c m2/<your-tool>-scene2 main`).
 2. Open the agent in the repo root and paste, verbatim:
 
    > Read AGENTS.md and every file under libs/legacy/transfers/src. Propose a plan to migrate the legacy transfers module to a standalone, signals-based feature that fits this workspace. Plan only: numbered steps, which files are created, changed or deleted at each step, and at which step the route /transfers/new/:accountId switches over. Do not write code and do not edit any file.
@@ -83,9 +83,9 @@ git diff --stat m2-start -- libs/legacy ':!*.spec.ts'     # must print nothing u
 
    > While you are at it, replace the *ngIf in libs/legacy/transfers/src/lib/transfer.component.html with @if.
 
-   Watch. With `AGENTS.md` loaded the agent should refuse or ask for a `migrate` task file; the task file's out-of-scope line says the same. If it edits anyway, run `git diff --stat m2-start -- libs/legacy ':!*.spec.ts'`. That line is not empty, and nothing in `lint:arch` will tell you: the ESLint override for `libs/legacy/**` _relaxes_ rules there, it does not forbid edits. The fence for legacy is the task file plus that one `git diff` line in the checkpoint. Revert the legacy edit: `git checkout m2-start -- libs/legacy/transfers/src/lib/transfer.component.html`.
+   Watch. With `AGENTS.md` loaded the agent should refuse or ask for a `migrate` task file; the task file's out-of-scope line says the same. If it edits anyway, run `git diff --stat main -- libs/legacy ':!*.spec.ts'`. That line is not empty, and nothing in `lint:arch` will tell you: the ESLint override for `libs/legacy/**` _relaxes_ rules there, it does not forbid edits. The fence for legacy is the task file plus that one `git diff` line in the checkpoint. Revert the legacy edit: `git checkout main -- libs/legacy/transfers/src/lib/transfer.component.html`.
 
-6. Tag your result if you want to compare later: `git tag m2/<your-tool>`. The reference result is `m2-migrated`.
+6. Commit your result on your branch to compare later. The reference is `track1/m2-ngmodule-solution` (`git diff track1/m2-ngmodule-solution~1` shows the state right after the route flip, before the delete).
 
 What to take from it: the agent did not need to know Angular migration patterns. It needed a task file that named the store, the rules function, the route, and the thing it may not touch.
 
@@ -132,7 +132,7 @@ The requirements worth a test (Given / When / Then, one action each):
 2. When the amount is above the balance and the user confirms, "The balance does not cover this amount." is shown and the balance is unchanged
 3. Given a blocked account (`a-joint`), confirming shows "This account is blocked. Contact your advisor to unblock it."
 4. Given `a-savings` and the beneficiary "Savings" (same RIB), confirming shows "The destination is the same account."
-5. When a valid amount is confirmed, the store balance drops by that amount and the router navigates to `/accounts/a-current` (on `main`, `/transfers/receipt/:id`: the reference `new-transfer.spec.ts` there asserts the receipt)
+5. When a valid amount is confirmed, the store balance drops by that amount and the router navigates to `/accounts/a-current` (after module 5, `/transfers/receipt/:id`: the reference `new-transfer.spec.ts` on `track1/m5-security-solution` asserts the receipt)
 
 Five tests. If you have more than seven, ask which requirement the extras name.
 
@@ -148,10 +148,10 @@ Read the console output of the final green run. A stray error from `FakeBackend`
 
 **Goal:** see what makes a deletion safe, and what happens when it is too early.
 
-0. Delete too early first, in a throwaway copy on `m2-start` (before the route flip):
+0. Delete too early first, in a throwaway copy of `main` (before the route flip):
 
    ```bash
-   git worktree add ../too-early m2-start && cd ../too-early && ln -s "$OLDPWD/node_modules" node_modules
+   git worktree add ../too-early main && cd ../too-early && ln -s "$OLDPWD/node_modules" node_modules
    rm -rf libs/legacy/transfers && npm run typecheck
    ```
 
@@ -163,7 +163,7 @@ Read the console output of the final green run. A stray error from `FakeBackend`
 
    > Work from docs/tasks/003-delete-legacy-transfers.md.
 
-4. Run the checkpoint commands. `git diff --stat m2-start -- libs/legacy` is now all deletions and that is correct. The proof comes in two parts: `lint:arch` never allowed anything but the app to import a `type:legacy` lib, and a green `typecheck` after the delete shows the app no longer does either. Same delete as step 0, no error this time. Check that the `@atlas/legacy-transfers` path in `tsconfig.base.json`, the two `libs/legacy/**` override blocks in `eslint.config.mjs` and the `libs/legacy/<name>/src` line in `sheriff.config.ts` went with it.
+4. Run the checkpoint commands. `git diff --stat main -- libs/legacy` is now all deletions and that is correct. The proof comes in two parts: `lint:arch` never allowed anything but the app to import a `type:legacy` lib, and a green `typecheck` after the delete shows the app no longer does either. Same delete as step 0, no error this time. Check that the `@atlas/legacy-transfers` path in `tsconfig.base.json`, the two `libs/legacy/**` override blocks in `eslint.config.mjs` and the `libs/legacy/<name>/src` line in `sheriff.config.ts` went with it.
 5. Open `/transfers/new/a-current` one last time.
 
 Compare with the scene-1 plan that started with "delete": here deletion is the last step, it is its own task file, and the diff has no logic in it.

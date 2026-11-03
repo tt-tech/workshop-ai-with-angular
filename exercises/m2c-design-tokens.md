@@ -1,6 +1,6 @@
 # Module 2c: Restyle without breaking, tokens as the contract
 
-One hour. You need: the repo on `main`, `npm install` done, one AI coding agent installed with a key.
+One hour. You need: module 2 done, or the repo on `track1/m2-ngmodule-solution`, `npm install` done, one AI coding agent installed with a key.
 
 Atlas has a small design system in plain SCSS, no utility framework:
 

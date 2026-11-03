@@ -1,6 +1,6 @@
 # Module 2b: Demote, don't delete, when the legacy is AngularJS
 
-Two hours. Same rule as module 2, one framework older. You need: module 2 done (or at least scene 1 of it), the repo on `m2b-start`, `npm install` done, one AI coding agent installed with a key.
+Two hours. Same rule as module 2, one framework older. You need: module 2 done (or at least scene 1 of it), the repo on `main`, `npm install` done, one AI coding agent installed with a key.
 
 The target is `libs/angularjs/beneficiaries`: an AngularJS 1.8 module running inside the Angular 22 app through `@angular/upgrade`. One component with one controller for the whole screen, one service that fetches, caches, validates, formats, focuses inputs and navigates, `any` everywhere, a RIB formatter that duplicates `formatRib` from `libs/domain`, and a header total formatted with `$filter('number')` while every row uses `formatMad`. Read it before you start (six files under `libs/angularjs/beneficiaries/src/lib`, fifteen minutes).
 
@@ -17,7 +17,7 @@ npm run lint:arch
 npm run test
 npm run typecheck
 npx nx build atlas --configuration=production
-git diff --stat m2b-start -- libs/angularjs ':!*.spec.ts'   # must print nothing until the delete task
+git diff --stat main -- libs/angularjs ':!*.spec.ts'   # must print nothing until the delete task
 ```
 
 ---
@@ -28,7 +28,7 @@ git diff --stat m2b-start -- libs/angularjs ':!*.spec.ts'   # must print nothing
 
 1. Open the live demo (or your local build) and click **Framework map** in the bottom right corner. The choice is kept in `localStorage` under `atlas.frameworkMap`.
 2. `/accounts`: one teal box, "Angular standalone". `/beneficiaries`: an orange box, "AngularJS 1.8", and inside it small teal outlines around every amount in the Sent column. Those are `<atlas-amount>`, a modern Angular component, rendered by an AngularJS template.
-3. The legend has a third colour, violet, "Angular NgModule (legacy)", for `<atlas-transfer>` from `libs/legacy/transfers`. Since task 002 that screen is no longer routed, so on `main` you will not meet it; on a module 2 branch before the route flip you would.
+3. The legend has a third colour, violet, "Angular NgModule (legacy)", for `<atlas-transfer>` from `libs/legacy/transfers`. On `main` it is the real transfer screen: open `/transfers/new/a-current`. After module 2 it is gone.
 
 The teal outlines inside the orange box are the subject of this module.
 

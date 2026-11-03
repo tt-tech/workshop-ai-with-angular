@@ -60,16 +60,16 @@ flowchart TB
 
 Rules encoded in `eslint.config.mjs` (`depConstraints`) and mirrored in `sheriff.config.ts`:
 
-| Tag | May depend on |
-|---|---|
-| `type:domain` | nothing |
-| `type:data-access` | data-access, domain |
-| `type:ui` | ui, domain |
-| `type:feature` | feature, ui, data-access, domain |
-| `type:legacy` | legacy, data-access, domain |
-| `type:app` | everything |
-| `scope:domain` | scope:domain only |
-| `scope:atlas` | scope:atlas, scope:domain |
+| Tag                | May depend on                    |
+| ------------------ | -------------------------------- |
+| `type:domain`      | nothing                          |
+| `type:data-access` | data-access, domain              |
+| `type:ui`          | ui, domain                       |
+| `type:feature`     | feature, ui, data-access, domain |
+| `type:legacy`      | legacy, data-access, domain      |
+| `type:app`         | everything                       |
+| `scope:domain`     | scope:domain only                |
+| `scope:atlas`      | scope:atlas, scope:domain        |
 
 Two things the diagram makes visible that a folder tree does not: `ui` never reaches `data-access` (presentational components take inputs), and `legacy` may read the modern stores but nothing modern imports legacy — the arrow only points one way, which is what makes it deletable later.
 
@@ -132,35 +132,45 @@ flowchart TB
   class AG src
 ```
 
-## 5. Modules 1–2 in git
+## 5. Tracks in git
 
 ```mermaid
 gitGraph
-  commit id: "atlas demo workspace"
-  commit id: "Atlas Bank + design" tag: "m1-with-rules"
-  branch m1-unconstrained
-  commit id: "no AGENTS.md, no boundaries" tag: "m1-unconstrained"
+  commit id: "Atlas Bank, three frameworks" tag: "main"
+  branch track1/m1-start
+  commit id: "no AGENTS.md, no boundaries"
   checkout main
-  commit id: "module 2 exercise + task files 002/003" tag: "m2-start"
-  commit id: "feature-transfers + route flipped" tag: "m2-migrated"
+  branch track1/m1-solution
+  commit id: "task 001: CSV export"
+  checkout main
+  branch track1/m2b-angularjs-solution
+  commit id: "task 006: beneficiaries migrated"
+  checkout main
+  branch track1/m2-ngmodule-solution
+  commit id: "pin, build beside, flip"
+  commit id: "delete legacy last"
+  branch track1/m2c-tokens-solution
+  commit id: "task 007: blocked banner"
+  checkout track1/m2-ngmodule-solution
+  branch track1/m5-start
+  commit id: "security rules removed"
+  commit id: "receipt + rules + fix" tag: "m5-security-solution"
 ```
 
-`m1-unconstrained` is `main` minus the guidance files and with `depConstraints` reset to `* → *`. Scene 1 runs there; scenes 2 and 3 run on `main`.
-
-`m2-start` is `main` after module 1: legacy still routed, `docs/tasks/002-migrate-transfers-to-feature.md` and `docs/tasks/003-delete-legacy-transfers.md` present. `m2-migrated` adds `libs/feature/transfers` and flips the `/transfers` route to it; `libs/legacy/transfers` is still present and untouched. Scene 4 (deleting it) is not tagged.
+`main` is the start of every track: nothing migrated, all rules on. A `*-start` branch exists only where a module starts from less than `main` (module 1 without guidance, module 5 without the security rules). `track1/solution` merges every Track 1 solution. When `main` changes, the track branches are rebased onto it, so a reference never drifts from the code people start with.
 
 ## Screenshots
 
 Taken from the running app (`npm start`, 1440×900, light). Files live in `docs/screenshots/`.
 
-| File | Route | Shows |
-|---|---|---|
-| `01-overview.png` | `/` | balance figure, three numbers, recent activity, accounts rail |
-| `02-accounts.png` | `/accounts` | list with formatted RIBs, package, status, balance |
-| `03-account-detail.png` | `/accounts/a-current` | transactions with category filter, details, cards |
-| `04-requests.png` | `/requests` | request list |
-| `05-legacy-transfer.png` | `/transfers/new/a-current` | the frozen legacy form, deliberately dated |
-| `06-lint-arch-fail.png` | terminal | `npm run lint:arch` failing on a `ui → data-access` import |
+| File                     | Route                      | Shows                                                         |
+| ------------------------ | -------------------------- | ------------------------------------------------------------- |
+| `01-overview.png`        | `/`                        | balance figure, three numbers, recent activity, accounts rail |
+| `02-accounts.png`        | `/accounts`                | list with formatted RIBs, package, status, balance            |
+| `03-account-detail.png`  | `/accounts/a-current`      | transactions with category filter, details, cards             |
+| `04-requests.png`        | `/requests`                | request list                                                  |
+| `05-legacy-transfer.png` | `/transfers/new/a-current` | the frozen legacy form, deliberately dated                    |
+| `06-lint-arch-fail.png`  | terminal                   | `npm run lint:arch` failing on a `ui → data-access` import    |
 
 ![Overview](screenshots/01-overview.png)
 ![Account detail](screenshots/03-account-detail.png)

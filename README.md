@@ -1,6 +1,6 @@
 # Fast and safe: AI in your Angular codebase
 
-The demo repository of the workshop **[Fast and safe: AI in your Angular codebase](https://tt-tech.io/workshops/ai-with-angular)** by [TT Tech](https://tt-tech.io). Web banking for *Atlas Bank*, an imaginary Moroccan bank: accounts and transactions, cards, requests, and a frozen legacy transfers module waiting to be migrated. Every exercise in the workshop runs on this codebase.
+The demo repository of the workshop **[Fast and safe: AI in your Angular codebase](https://tt-tech.io/workshops/ai-with-angular)** by [TT Tech](https://tt-tech.io). Web banking for _Atlas Bank_, an imaginary Moroccan bank: accounts and transactions, cards, requests, and a frozen legacy transfers module waiting to be migrated. Every exercise in the workshop runs on this codebase.
 
 ![Atlas Bank overview: balance, recent activity and accounts](docs/screenshots/01-overview.png)
 
@@ -54,17 +54,32 @@ libs/feature/dashboard        overview route
 libs/feature/accounts         list + detail routes
 libs/feature/requests         list route
 libs/legacy/transfers         NgModule + *ngIf + constructor DI + any — the module-2 migration target
+libs/angularjs/beneficiaries  AngularJS 1.8 inside the app through @angular/upgrade — the module-2b target
 docs/tasks                    task-file template + tasks 001 (module 1), 000/002/003 (module 2), 005 (receipt)
 exercises                     one file per workshop module
 ```
 
-## Exercises
+## Tracks and branches
 
-| Module | File | Git tags used |
-|---|---|---|
-| 1 — AI-assisted workflow | `exercises/m1-ai-assisted-workflow.md` | `m1-unconstrained`, `m1-with-rules` |
-| 2 — Modernising legacy Angular with agents | `exercises/m2-modernising-legacy.md` | `m2-start`, `m2-migrated` |
-| 3 — Building an AI feature | *(coming)* | |
+`main` is the bank before any migration: modern Angular, a legacy NgModule screen and an AngularJS screen living together, with the rules, the design system and the checks in place. Turn on **Framework map** (bottom right) to see which framework renders what. Every track starts from `main`; each module has a `*-solution` branch with the reference result, and a `*-start` branch only where the start needs something removed.
+
+### Track 1: coding agents in a legacy Angular codebase
+
+| Module                                    | Exercise                               | Start                          | Reference                       |
+| ----------------------------------------- | -------------------------------------- | ------------------------------ | ------------------------------- |
+| 1 — AI-assisted workflow                  | `exercises/m1-ai-assisted-workflow.md` | `track1/m1-start`, then `main` | `track1/m1-solution`            |
+| 2 — Modernising legacy Angular (NgModule) | `exercises/m2-modernising-legacy.md`   | `main`                         | `track1/m2-ngmodule-solution`   |
+| 2b — AngularJS in a hybrid app            | `exercises/m2b-hybrid-angularjs.md`    | `main`                         | `track1/m2b-angularjs-solution` |
+| 2c — Restyle without breaking (tokens)    | `exercises/m2c-design-tokens.md`       | `track1/m2-ngmodule-solution`  | `track1/m2c-tokens-solution`    |
+| 5 — Security both ways                    | `exercises/m5-security-both-ways.md`   | `track1/m5-start`              | `track1/m5-security-solution`   |
+
+`track1/solution` has every Track 1 module done. Start a module with `git switch -c <module>/<your-name> <start branch>`.
+
+### Track 2: AI features in the product
+
+_(coming)_
+
+The tags from the first recordings (`m1-unconstrained`, `m2-start`, `m2-migrated`, `video-*`) stay for older links; new work uses the branches.
 
 ## Licence
 

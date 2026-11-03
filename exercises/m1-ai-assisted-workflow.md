@@ -17,7 +17,7 @@ git diff --stat       # how big was that?
 
 **Goal:** see what an agent does to a monorepo when nothing tells it the rules.
 
-1. Check out the starting state: `git checkout m1-unconstrained`. In this state `AGENTS.md` and the tool-specific files are **removed**, and the ESLint boundary rules are the Nx default (`*` may depend on `*`).
+1. Check out the starting state: `git switch track1/m1-start`. In this state `AGENTS.md` and the tool-specific files are **removed**, and the ESLint boundary rules are the Nx default (`*` may depend on `*`).
 2. Open the agent in the repo root and paste, verbatim:
 
    > Add an "Export CSV" button on the account page that downloads the currently filtered transactions. Also show the linked card status next to each account in the accounts list.
@@ -35,13 +35,14 @@ Typical result in our runs: 6–12 files, 400–900 lines, a store injected into
 
 **Goal:** the same agent, the same prompt, inside the fence.
 
-1. `git checkout m1-with-rules`. This is `main`: `AGENTS.md` present, thin pointer files for each tool, boundary rules active in `eslint.config.mjs`, a task file at `docs/tasks/001-export-transactions-csv.md`.
-2. Read `AGENTS.md` once, as the agent will. Notice what is *not* in it: no architecture vision, no history. Fences and checks only.
+1. `git switch main`: `AGENTS.md` present, thin pointer files for each tool, boundary rules active in `eslint.config.mjs`, a task file at `docs/tasks/001-export-transactions-csv.md`.
+2. Read `AGENTS.md` once, as the agent will. Notice what is _not_ in it: no architecture vision, no history. Fences and checks only.
 3. Open the agent and paste:
 
    > Work from docs/tasks/001-export-transactions-csv.md.
 
    Nothing else. The task file carries scope, out-of-scope, done-when and the 300-line limit.
+
 4. Let it finish. Run the checkpoint commands. Compare with your scene 1 notes: files, lines, boundaries, legacy, assertions.
 5. Now break the fence on purpose: open `libs/ui/src/lib/page-header.ts`, inject `AccountsStore` from `@atlas/data-access-banking`, run `npm run lint:arch`. Read the error. Revert. That error is what the agent loops on until it is fixed, because `AGENTS.md` says the command must pass before it is done.
 6. Optional: run the same task through Sheriff instead of Nx boundaries — `npm run lint:arch:sheriff` — and open `sheriff.config.ts`. Same contract, no Nx required.
