@@ -1,0 +1,90 @@
+// Semantic tokens: the contract. Components read --color-* by role (surface, text, credit), never a palette step.
+// Light is the default; dark follows the OS unless the user picked a theme (html[data-theme], set by ThemeToggle).
+@use 'sass:map';
+@use 'palette' as *;
+
+@mixin light {
+  color-scheme: light;
+  --color-canvas: #{map.get($neutral, 50)};
+  --color-surface: #{map.get($neutral, 0)};
+  --color-surface-raised: #{map.get($neutral, 0)};
+  --color-surface-sunken: #{map.get($neutral, 100)};
+  --color-border: #{map.get($neutral, 200)};
+  --color-border-strong: #{map.get($neutral, 400)};
+  --color-text: #{map.get($neutral, 900)};
+  --color-text-muted: #{map.get($neutral, 600)};
+  --color-brand: #{map.get($brand, 700)};
+  --color-brand-hover: #{map.get($brand, 800)};
+  --color-brand-soft: #{map.get($brand, 50)};
+  --color-brand-text: #{map.get($brand, 600)};
+  --color-on-brand: #{map.get($neutral, 0)};
+  --color-accent: #{map.get($amber, 400)};
+  --color-on-accent: #{map.get($brand, 950)};
+  --color-focus: #{map.get($brand, 600)};
+  --color-credit: #{map.get($brand, 600)};
+  --color-debit: #{map.get($neutral, 900)};
+  --color-danger: #{map.get($red, 700)};
+  --color-danger-soft: #{map.get($red, 50)};
+  --color-warning: #{map.get($amber, 700)};
+  --color-warning-dot: #{map.get($amber, 400)};
+  --color-warning-soft: #{map.get($amber, 100)};
+  --color-success-dot: #{map.get($brand, 500)};
+  --color-neutral-dot: #{map.get($neutral, 300)};
+  --color-rail: #{map.get($brand, 900)};
+  --color-rail-text: #{map.get($neutral, 0)};
+  --color-hero-from: #{map.get($brand, 700)};
+  --color-hero-to: #{map.get($brand, 950)};
+  --shadow-1:
+    0 1px 2px #{rgba(map.get($brand, 950), 0.06)},
+    0 1px 3px #{rgba(map.get($brand, 950), 0.04)};
+  --shadow-2: 0 8px 24px #{rgba(map.get($brand, 950), 0.1)};
+}
+
+@mixin dark {
+  color-scheme: dark;
+  --color-canvas: #{map.get($night, canvas)};
+  --color-surface: #{map.get($night, surface)};
+  --color-surface-raised: #{map.get($night, raised)};
+  --color-surface-sunken: #{map.get($night, canvas)};
+  --color-border: #{map.get($night, border)};
+  --color-border-strong: #{map.get($night, border-strong)};
+  --color-text: #{map.get($night, text)};
+  --color-text-muted: #{map.get($night, muted)};
+  --color-brand: #{map.get($night, brand)};
+  --color-brand-hover: #{map.get($night, brand-hover)};
+  --color-brand-soft: #{map.get($night, brand-soft)};
+  --color-brand-text: #{map.get($night, brand)};
+  --color-on-brand: #{map.get($night, on-brand)};
+  --color-on-accent: #{map.get($amber, 900)};
+  --color-focus: #{map.get($night, brand-hover)};
+  --color-credit: #{map.get($night, credit)};
+  --color-debit: #{map.get($night, text)};
+  --color-danger: #{map.get($red, 300)};
+  --color-danger-soft: #{map.get($red, 900)};
+  --color-warning: #{map.get($amber, 300)};
+  --color-warning-soft: #{map.get($amber, 900)};
+  --color-neutral-dot: #{map.get($night, border-strong)};
+  --color-rail: #{map.get($night, rail)};
+  --color-hero-from: #{map.get($brand, 800)};
+  --color-hero-to: #{map.get($night, rail)};
+  --shadow-1: 0 0 0 1px #{map.get($night, border)};
+  --shadow-2: 0 8px 24px #{rgba(map.get($neutral, 950), 0.5)};
+}
+
+@mixin emit {
+  :root {
+    @include light;
+    @each $name, $value in $framework {
+      --fw-#{$name}: #{$value};
+    }
+    --fw-on: #{map.get($neutral, 0)};
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme='light']) {
+      @include dark;
+    }
+  }
+  :root[data-theme='dark'] {
+    @include dark;
+  }
+}

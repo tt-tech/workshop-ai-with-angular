@@ -1,7 +1,11 @@
 import { Component, computed, inject, OnInit } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { categoryLabel, maskRib } from '@atlas/domain';
-import { AccountsStore, CardsStore, RequestsStore } from '@atlas/data-access-banking';
+import {
+  AccountsStore,
+  CardsStore,
+  RequestsStore,
+} from '@atlas/data-access-banking';
 import { Amount, MadPipe, StatusBadge } from '@atlas/ui';
 
 const recentCount = 6;
@@ -11,30 +15,44 @@ const customerFirstName = 'Salma';
   selector: 'atlas-dashboard',
   imports: [RouterLink, Amount, MadPipe, StatusBadge],
   template: `
-    <section class="hero">
+    <section class="hero" aria-labelledby="total-label">
       <p class="greeting">{{ greeting() }}, {{ firstName }}.</p>
+      <p class="total-label" id="total-label">Total balance</p>
       <p class="total">{{ accounts.totalBalanceMad() | mad }}</p>
-      <p class="figures">
-        <span><strong>{{ spentThisMonth() | mad }}</strong> spent this month</span>
-        <span><strong>{{ requests.openCount() }}</strong> open requests</span>
-        <span><strong>{{ cards.activeCount() }}</strong> active card{{ cards.activeCount() === 1 ? '' : 's' }}</span>
-      </p>
+      <ul class="figures">
+        <li>
+          <strong>{{ spentThisMonth() | mad }}</strong> spent this month
+        </li>
+        <li>
+          <strong>{{ requests.openCount() }}</strong> open requests
+        </li>
+        <li>
+          <strong>{{ cards.activeCount() }}</strong> active card{{
+            cards.activeCount() === 1 ? '' : 's'
+          }}
+        </li>
+      </ul>
     </section>
 
     <div class="columns">
-      <section>
-        <h2 class="section-title">Recent activity</h2>
+      <section class="card card--flush">
+        <header class="card__header">
+          <h2 class="card__title">Recent activity</h2>
+        </header>
         @if (accounts.loading()) {
-          <p class="muted">Loading your accounts…</p>
+          <p class="muted pad">Loading your accounts…</p>
         } @else {
           <table class="table">
             <tbody>
               @for (t of recent(); track t.id) {
                 <tr>
-                  <td class="date">{{ t.date }}</td>
+                  <td class="date muted small">{{ t.date }}</td>
                   <td>
-                    <div>{{ t.label }}</div>
-                    <div class="muted small">{{ categoryLabel[t.category] }} · {{ accountLabel(t.accountId) }}</div>
+                    <div class="strong">{{ t.label }}</div>
+                    <div class="muted small">
+                      {{ categoryLabel[t.category] }} ·
+                      {{ accountLabel(t.accountId) }}
+                    </div>
                   </td>
                   <td class="num"><atlas-amount [value]="t.amountMad" /></td>
                 </tr>
@@ -44,14 +62,16 @@ const customerFirstName = 'Salma';
         }
       </section>
 
-      <aside>
-        <h2 class="section-title">Accounts</h2>
+      <aside class="card card--flush">
+        <header class="card__header">
+          <h2 class="card__title">Accounts</h2>
+        </header>
         <ul class="accounts">
           @for (a of accounts.accounts(); track a.id) {
             <li>
               <a [routerLink]="['/accounts', a.id]">
                 <span class="label">{{ a.label }}</span>
-                <span class="rib">{{ maskRib(a.rib) }}</span>
+                <span class="rib mono muted">{{ maskRib(a.rib) }}</span>
                 <span class="balance">{{ a.balanceMad | mad }}</span>
                 @if (a.status !== 'active') {
                   <atlas-status-badge [status]="a.status" />
@@ -64,26 +84,115 @@ const customerFirstName = 'Salma';
     </div>
   `,
   styles: `
-    .hero { padding: 0.5rem 0 2rem; border-bottom: 1px solid var(--line); margin-bottom: 2rem; }
-    .greeting { margin: 0; color: var(--ink-2); }
-    .total { margin: 0.25rem 0 0.75rem; font-size: 2.75rem; font-weight: 600; letter-spacing: -0.02em; font-variant-numeric: tabular-nums; }
-    .figures { margin: 0; display: flex; gap: 2rem; color: var(--ink-2); }
-    .figures strong { color: var(--ink); font-weight: 600; font-variant-numeric: tabular-nums; }
-    .columns { display: grid; grid-template-columns: minmax(0, 1.6fr) minmax(0, 1fr); gap: 3rem; }
-    .section-title { margin: 0 0 1rem; font-size: 0.9375rem; font-weight: 600; color: var(--ink-2); }
-    .date { color: var(--ink-2); white-space: nowrap; width: 7rem; }
-    .num { text-align: right; }
-    .accounts { list-style: none; margin: 0; padding: 0; }
-    .accounts li + li { border-top: 1px solid var(--line); }
-    .accounts a { display: grid; grid-template-columns: 1fr auto; grid-template-rows: auto auto; column-gap: 1rem; padding: 0.9rem 0; text-decoration: none; color: inherit; }
-    .accounts a:hover .label { color: var(--petrol); }
-    .label { font-weight: 500; }
-    .rib { font-family: var(--mono); font-size: 0.8125rem; color: var(--ink-2); }
-    .balance { grid-column: 2; grid-row: 1; text-align: right; font-variant-numeric: tabular-nums; font-weight: 500; }
-    .accounts atlas-status-badge { grid-column: 2; grid-row: 2; justify-self: end; }
-    .muted { color: var(--ink-2); }
-    .small { font-size: 0.8125rem; }
-    @media (max-width: 900px) { .columns { grid-template-columns: 1fr; gap: 2rem; } .figures { flex-wrap: wrap; gap: 1rem; } }
+    .hero {
+      margin-bottom: var(--space-8);
+      padding: var(--space-8);
+      border-radius: var(--radius-l);
+      background: linear-gradient(
+        135deg,
+        var(--color-hero-from),
+        var(--color-hero-to)
+      );
+      color: var(--color-rail-text);
+      box-shadow: var(--shadow-2);
+    }
+    .greeting {
+      font-size: var(--text-l);
+      font-weight: var(--weight-medium);
+    }
+    .total-label {
+      margin-top: var(--space-6);
+      font-size: var(--text-xs);
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      opacity: 0.75;
+    }
+    .total {
+      margin: var(--space-1) 0 var(--space-6);
+      font-size: var(--text-3xl);
+      font-weight: var(--weight-semibold);
+      letter-spacing: -0.02em;
+      font-variant-numeric: tabular-nums;
+      line-height: 1.1;
+    }
+    .figures {
+      display: flex;
+      flex-wrap: wrap;
+      gap: var(--space-2);
+      margin: 0;
+      padding: 0;
+      list-style: none;
+      font-size: var(--text-s);
+    }
+    .figures li {
+      padding: var(--space-1) var(--space-3);
+      border-radius: var(--radius-pill);
+      background: color-mix(in srgb, currentColor 12%, transparent);
+    }
+    .figures strong {
+      font-weight: var(--weight-semibold);
+      font-variant-numeric: tabular-nums;
+    }
+    .columns {
+      display: grid;
+      grid-template-columns: minmax(0, 1.6fr) minmax(0, 1fr);
+      gap: var(--space-6);
+      align-items: start;
+    }
+    .pad {
+      padding: var(--space-5);
+    }
+    .date {
+      width: 7rem;
+      white-space: nowrap;
+    }
+    .accounts {
+      list-style: none;
+      margin: 0;
+      padding: 0;
+    }
+    .accounts li + li {
+      border-top: 1px solid var(--color-border);
+    }
+    .accounts a {
+      display: grid;
+      grid-template-columns: 1fr auto;
+      column-gap: var(--space-4);
+      row-gap: var(--space-1);
+      padding: var(--space-4) var(--space-5);
+      text-decoration: none;
+      color: inherit;
+      transition: background-color var(--motion-fast) var(--easing);
+    }
+    .accounts a:hover {
+      background: var(--color-brand-soft);
+    }
+    .label {
+      font-weight: var(--weight-medium);
+    }
+    .balance {
+      grid-column: 2;
+      grid-row: 1;
+      text-align: right;
+      font-variant-numeric: tabular-nums;
+      font-weight: var(--weight-semibold);
+    }
+    .accounts atlas-status-badge {
+      grid-column: 2;
+      grid-row: 2;
+      justify-self: end;
+    }
+    @media (max-width: 56rem) {
+      .columns {
+        grid-template-columns: 1fr;
+      }
+      .hero {
+        padding: var(--space-6);
+      }
+      .total {
+        font-size: var(--text-2xl);
+      }
+    }
   `,
 })
 export class Dashboard implements OnInit {
@@ -95,7 +204,9 @@ export class Dashboard implements OnInit {
   protected readonly categoryLabel = categoryLabel;
   protected readonly maskRib = maskRib;
 
-  protected readonly recent = computed(() => this.accounts.recentTransactions().slice(0, recentCount));
+  protected readonly recent = computed(() =>
+    this.accounts.recentTransactions().slice(0, recentCount),
+  );
 
   protected readonly spentThisMonth = computed(() => {
     const month = new Date().toISOString().slice(0, 7);
@@ -107,11 +218,18 @@ export class Dashboard implements OnInit {
 
   protected readonly greeting = computed(() => {
     const hour = new Date().getHours();
-    return hour < 12 ? 'Good morning' : hour < 18 ? 'Good afternoon' : 'Good evening';
+    return hour < 12
+      ? 'Good morning'
+      : hour < 18
+        ? 'Good afternoon'
+        : 'Good evening';
   });
 
   protected accountLabel(accountId: string): string {
-    return this.accounts.accounts().find((a) => a.id === accountId)?.label ?? accountId;
+    return (
+      this.accounts.accounts().find((a) => a.id === accountId)?.label ??
+      accountId
+    );
   }
 
   ngOnInit(): void {

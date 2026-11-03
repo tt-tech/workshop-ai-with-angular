@@ -10,6 +10,7 @@ import { Router } from '@angular/router';
 import {
   blockerMessage,
   canTransfer,
+  packageById,
   type TransferVerdict,
 } from '@atlas/domain';
 import { AccountsStore } from '@atlas/data-access-banking';
@@ -27,46 +28,70 @@ const labelMaxLength = 35;
         title="New transfer"
         [subtitle]="from.label + ' — ' + (from.balanceMad | mad) + ' available'"
       />
-      <form class="form" (submit)="$event.preventDefault(); submit()">
-        <label class="field">
-          Beneficiary
-          <select (change)="toRib.set($any($event.target).value)">
-            @for (b of beneficiaries(); track b.rib) {
-              <option [value]="b.rib" [selected]="b.rib === selectedRib()">
-                {{ b.name }} — {{ b.bank }}
-              </option>
-            }
-          </select>
-        </label>
-        <label class="field">
-          Amount (MAD)
-          <input
-            type="number"
-            min="0"
-            step="0.01"
-            (input)="amountMad.set($any($event.target).valueAsNumber || 0)"
-          />
-        </label>
-        <label class="field">
-          Label
-          <span class="hint">(use **bold** for emphasis on the receipt)</span>
-          <input
-            type="text"
-            [attr.maxlength]="labelMaxLength"
-            (input)="label.set($any($event.target).value)"
-          />
-        </label>
-        @if (error(); as message) {
-          <p class="error" role="alert">{{ message }}</p>
-        }
-        <button
-          class="button"
-          type="submit"
-          [disabled]="!verdict()?.ok || saving()"
-        >
-          {{ saving() ? 'Sending…' : 'Confirm transfer' }}
-        </button>
-      </form>
+      <div class="layout">
+        <form class="form card" (submit)="$event.preventDefault(); submit()">
+          <label class="field">
+            Beneficiary
+            <select (change)="toRib.set($any($event.target).value)">
+              @for (b of beneficiaries(); track b.rib) {
+                <option [value]="b.rib" [selected]="b.rib === selectedRib()">
+                  {{ b.name }} — {{ b.bank }}
+                </option>
+              }
+            </select>
+          </label>
+          <label class="field">
+            Amount (MAD)
+            <input
+              type="number"
+              min="0"
+              step="0.01"
+              inputmode="decimal"
+              (input)="amountMad.set($any($event.target).valueAsNumber || 0)"
+            />
+          </label>
+          <label class="field">
+            Label
+            <span class="field__hint"
+              >Shown on the receipt. Use **bold** for emphasis.</span
+            >
+            <input
+              type="text"
+              [attr.maxlength]="labelMaxLength"
+              (input)="label.set($any($event.target).value)"
+            />
+          </label>
+          @if (error(); as message) {
+            <p class="alert alert--danger" role="alert">{{ message }}</p>
+          }
+          <button
+            class="button button--block"
+            type="submit"
+            [disabled]="!verdict()?.ok || saving()"
+          >
+            {{ saving() ? 'Sending…' : 'Confirm transfer' }}
+          </button>
+        </form>
+
+        <aside class="summary card" aria-label="Transfer summary">
+          <h2 class="card__title">Summary</h2>
+          <dl>
+            <dt>You send</dt>
+            <dd class="send">{{ amountMad() | mad }}</dd>
+            <dt>To</dt>
+            <dd>{{ beneficiary()?.name ?? '—' }}</dd>
+            <dt>Balance after</dt>
+            <dd [class.negative]="balanceAfter() < 0">
+              {{ balanceAfter() | mad }}
+            </dd>
+            <dt>Left to send today</dt>
+            <dd [class.negative]="leftToday() < 0">{{ leftToday() | mad }}</dd>
+          </dl>
+          <p class="note muted small">
+            Daily limit of {{ packageName() }}: {{ dailyLimit() | mad }}.
+          </p>
+        </aside>
+      </div>
     } @else if (store.loaded()) {
       <p class="muted">Account not found.</p>
     } @else {
@@ -74,36 +99,48 @@ const labelMaxLength = 35;
     }
   `,
   styles: `
+    .layout {
+      display: grid;
+      grid-template-columns: minmax(0, 1.4fr) minmax(0, 1fr);
+      gap: var(--space-6);
+      align-items: start;
+      max-width: 56rem;
+    }
     .form {
       display: grid;
-      gap: 1rem;
-      max-width: 34rem;
+      gap: var(--space-5);
     }
-    .field {
+    .summary dl {
       display: grid;
-      gap: 0.35rem;
-      color: var(--ink-2);
-      font-size: 0.875rem;
+      grid-template-columns: auto 1fr;
+      gap: var(--space-3) var(--space-4);
+      margin-top: var(--space-4);
     }
-    .field input,
-    .field select {
-      font: inherit;
-      padding: 0.5rem 0.75rem;
-      border: 1px solid var(--line);
-      border-radius: 0.5rem;
-      color: var(--ink);
-      background: var(--paper);
+    .summary dt {
+      color: var(--color-text-muted);
+      font-size: var(--text-s);
     }
-    .hint {
-      color: var(--ink-2);
-      font-weight: 400;
+    .summary dd {
+      text-align: right;
+      font-variant-numeric: tabular-nums;
     }
-    .error {
-      margin: 0;
-      color: #b42318;
+    .send {
+      font-size: var(--text-xl);
+      font-weight: var(--weight-semibold);
     }
-    .muted {
-      color: var(--ink-2);
+    .negative {
+      color: var(--color-danger);
+      font-weight: var(--weight-medium);
+    }
+    .note {
+      margin-top: var(--space-5);
+      padding-top: var(--space-4);
+      border-top: 1px solid var(--color-border);
+    }
+    @media (max-width: 56rem) {
+      .layout {
+        grid-template-columns: 1fr;
+      }
     }
   `,
 })
@@ -127,6 +164,29 @@ export class NewTransfer implements OnInit {
   protected readonly selectedRib = computed(
     () => this.toRib() || this.beneficiaries()[0]?.rib || '',
   );
+
+  protected readonly beneficiary = computed(() =>
+    this.beneficiaries().find((b) => b.rib === this.selectedRib()),
+  );
+  protected readonly balanceAfter = computed(
+    () => (this.account()?.balanceMad ?? 0) - this.amountMad(),
+  );
+  private readonly pkg = computed(() =>
+    packageById(this.account()?.packageId ?? 'atlas-essentiel'),
+  );
+  protected readonly packageName = computed(() => this.pkg().name);
+  protected readonly dailyLimit = computed(
+    () => this.pkg().dailyTransferLimitMad,
+  );
+  protected readonly leftToday = computed(() => {
+    const from = this.account();
+    if (!from) return 0;
+    return (
+      this.dailyLimit() -
+      this.store.transferredTodayMad(from.id) -
+      this.amountMad()
+    );
+  });
 
   protected readonly verdict = computed<TransferVerdict | undefined>(() => {
     const from = this.account();

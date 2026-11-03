@@ -1,10 +1,4 @@
-// Dev aid "Framework map": which framework renders which part of the screen. Toggled by FrameworkMapToggle (class on <html>).
-:root {
-  --fw-angular: #0f766e;
-  --fw-legacy: #7c3aed;
-  --fw-angularjs: #c2410c;
-}
-
+// Colours: --fw-* in styles/tokens. Dev aid "Framework map": which framework renders which part of the screen. Toggled by FrameworkMapToggle (class on <html>).
 html.framework-map {
   [data-framework],
   atlas-transfer {
@@ -18,14 +12,15 @@ html.framework-map {
   atlas-transfer::before {
     content: var(--fw-label);
     position: absolute;
-    top: -0.75rem;
-    right: 0.5rem;
+    // Inside the box: a label above it is cut off when the box starts at the top of the window (<main>).
+    top: 0;
+    right: 0;
     z-index: 10;
     padding: 0 0.4rem;
-    border-radius: 3px;
+    border-radius: 0 0 0 3px;
     background: var(--fw-color);
-    color: #fff;
-    font: 500 0.6875rem/1.4 var(--mono);
+    color: var(--fw-on);
+    font: 500 0.6875rem/1.4 var(--font-mono);
   }
 
   [data-framework='angular'] {

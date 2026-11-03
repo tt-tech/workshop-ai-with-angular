@@ -29,11 +29,12 @@ export class BeneficiariesUpgradeModule {}
   selector: 'atlas-beneficiaries-host',
   template: `<div class="lb-root" data-framework="angularjs" #root></div>`,
   encapsulation: ViewEncapsulation.None,
+  // Legacy screen: reads the new tokens but keeps its flat, card-less layout, so old and new stay easy to tell apart.
   styles: `
     .lb-header {
       padding-bottom: 1.25rem;
       margin-bottom: 1.5rem;
-      border-bottom: 1px solid var(--line);
+      border-bottom: 1px solid var(--color-border);
     }
     .lb-title {
       margin: 0;
@@ -48,17 +49,17 @@ export class BeneficiariesUpgradeModule {}
     }
     .lb-muted {
       margin: 0.25rem 0 0;
-      color: var(--ink-2);
+      color: var(--color-text-muted);
     }
     .lb-strong {
       font-weight: 500;
     }
     .lb-mono {
-      font-family: var(--mono);
+      font-family: var(--font-mono);
       font-size: 0.8125rem;
     }
     .lb-error {
-      color: var(--red);
+      color: var(--color-danger);
       margin: 0.5rem 0;
     }
     .lb-toolbar {
@@ -88,7 +89,7 @@ export class BeneficiariesUpgradeModule {}
     }
     .lb-root .is-new td,
     .lb-root li.is-new {
-      background: var(--petrol-soft);
+      background: var(--color-brand-soft);
     }
     @media (max-width: 800px) {
       .lb-root .table {

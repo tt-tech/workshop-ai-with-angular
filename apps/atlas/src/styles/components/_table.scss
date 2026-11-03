@@ -1,0 +1,44 @@
+@use '../abstracts/mixins' as *;
+
+.table {
+  width: 100%;
+  border-collapse: collapse;
+
+  th,
+  td {
+    padding: var(--space-3) var(--space-5);
+    text-align: left;
+    vertical-align: middle;
+    border-bottom: 1px solid var(--color-border);
+  }
+
+  th {
+    font-size: var(--text-xs);
+    font-weight: var(--weight-medium);
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    color: var(--color-text-muted);
+    background: var(--color-surface-sunken);
+  }
+
+  tbody tr:last-child td {
+    border-bottom: 0;
+  }
+  tbody tr {
+    transition: background-color var(--motion-fast) var(--easing);
+  }
+  tbody tr:hover td {
+    background: var(--color-brand-soft);
+  }
+
+  .num,
+  th.num {
+    text-align: right;
+    @include tabular;
+  }
+}
+
+// Small screens: a wide table scrolls inside its card instead of pushing the page sideways.
+.table-scroll {
+  overflow-x: auto;
+}

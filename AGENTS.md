@@ -8,14 +8,14 @@ Web banking for **Atlas Bank**, an imaginary Moroccan bank. A customer sees acco
 
 ## Layout and boundaries (enforced: `npm run lint:arch`)
 
-| Path | What | May import |
-|---|---|---|
-| `libs/domain` | pure TypeScript models + pure functions, **no Angular imports** | nothing |
-| `libs/data-access/*` | stores (signals) and services; the only place that talks to the backend | domain |
-| `libs/ui` | presentational components: inputs/outputs only | domain |
-| `libs/feature/*` | routed features that wire ui + data-access | ui, data-access, domain |
-| `libs/legacy/*` | **frozen** NgModule code being migrated — wrap it, don't extend it | data-access, domain |
-| `apps/atlas` | shell and routes only, no business logic | everything above |
+| Path                 | What                                                                    | May import              |
+| -------------------- | ----------------------------------------------------------------------- | ----------------------- |
+| `libs/domain`        | pure TypeScript models + pure functions, **no Angular imports**         | nothing                 |
+| `libs/data-access/*` | stores (signals) and services; the only place that talks to the backend | domain                  |
+| `libs/ui`            | presentational components: inputs/outputs only                          | domain                  |
+| `libs/feature/*`     | routed features that wire ui + data-access                              | ui, data-access, domain |
+| `libs/legacy/*`      | **frozen** NgModule code being migrated — wrap it, don't extend it      | data-access, domain     |
+| `apps/atlas`         | shell and routes only, no business logic                                | everything above        |
 
 The app is **zoneless** (Angular's default). Never add `zone.js`. Legacy code in `libs/legacy` calls `ChangeDetectorRef.markForCheck()` after its manual subscriptions; that is a smell to migrate, not a pattern to copy.
 
@@ -49,6 +49,13 @@ Cross-lib imports go through the `@atlas/*` aliases only, never relative paths i
 - An assertion that already passes on first render, before any action, proves nothing. Assert what the action changed.
 - A console error in a green run is a failure. Read the console; never silence it.
 - **Never edit existing assertions to make a diff pass.** If an assertion is wrong, say so in the PR and stop.
+
+## Styles (design tokens are the contract)
+
+- **No raw colour outside the tokens.** Read `--color-*` by role (`--color-surface`, `--color-text-muted`, `--color-credit`); the palette lives only in `apps/atlas/src/styles/tokens`. A new role is a new token there, with light and dark values, not a hex in a component. `npm run check:tokens` (part of `lint:arch`) fails on `#hex`, `rgb()`, `hsl()` elsewhere. `libs/legacy` is exempt until it is deleted.
+- **Use what exists before adding CSS.** Global layers in `apps/atlas/src/styles`: `.card`, `.button` (`--ghost`, `--quiet`, `--block`), `.field`, `.table`, `.alert`, and utilities (`.muted`, `.small`, `.mono`, `.num`, `.strong`). Component styles only for layout specific to that screen.
+- **Money is tabular and right-aligned** (`.num` or `<atlas-amount>`); never format MAD by hand, use `formatMad` / the `mad` pipe.
+- **A restyle never changes the flow.** Labels, button names and `role=alert` messages are what the URL tests read; keep them, and the tests pass unchanged.
 
 ## Security (module 5: AI as the attacker, AI as the reviewer)
 

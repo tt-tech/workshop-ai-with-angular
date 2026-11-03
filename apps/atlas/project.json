@@ -15,6 +15,9 @@
         "browser": "apps/atlas/src/main.ts",
         "tsConfig": "apps/atlas/tsconfig.app.json",
         "inlineStyleLanguage": "scss",
+        "stylePreprocessorOptions": {
+          "includePaths": ["apps/atlas/src"]
+        },
         "allowedCommonJsDependencies": ["angular"],
         "assets": [
           {

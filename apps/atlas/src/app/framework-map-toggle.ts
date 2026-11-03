@@ -1,33 +1,9 @@
 import { Component, DOCUMENT, inject, signal } from '@angular/core';
+import { localStorageOf, readSetting, writeSetting } from './stored-setting';
 
 export const frameworkMapKey = 'atlas.frameworkMap';
 export const frameworkMapClass = 'framework-map';
 const storedOn = 'on';
-
-const readStored = (storage: Storage | undefined): boolean => {
-  try {
-    return storage?.getItem(frameworkMapKey) === storedOn;
-  } catch {
-    return false;
-  }
-};
-
-const writeStored = (storage: Storage | undefined, on: boolean): void => {
-  try {
-    if (on) storage?.setItem(frameworkMapKey, storedOn);
-    else storage?.removeItem(frameworkMapKey);
-  } catch {
-    // storage unavailable: the map toggles for this page view only
-  }
-};
-
-const localStorageOf = (document: Document): Storage | undefined => {
-  try {
-    return document.defaultView?.localStorage;
-  } catch {
-    return undefined;
-  }
-};
 
 @Component({
   selector: 'atlas-framework-map-toggle',
@@ -64,10 +40,10 @@ const localStorageOf = (document: Document): Storage | undefined => {
     }
     .toggle {
       padding: 0.3rem 0.65rem;
-      border: 1px dashed var(--line-strong);
+      border: 1px dashed var(--color-border-strong);
       border-radius: 999px;
-      background: var(--paper);
-      color: var(--ink-2);
+      background: var(--color-surface);
+      color: var(--color-text-muted);
       font: inherit;
       cursor: pointer;
       opacity: 0.75;
@@ -75,15 +51,16 @@ const localStorageOf = (document: Document): Storage | undefined => {
     .toggle:hover,
     .toggle[aria-pressed='true'] {
       opacity: 1;
-      color: var(--ink);
+      color: var(--color-text);
     }
     .legend {
       margin: 0;
       padding: 0.5rem 0.65rem;
       list-style: none;
-      background: var(--paper);
-      border: 1px solid var(--line);
-      border-radius: 6px;
+      background: var(--color-surface);
+      border: 1px solid var(--color-border);
+      border-radius: var(--radius-m);
+      box-shadow: var(--shadow-2);
       display: grid;
       gap: 0.25rem;
     }
@@ -110,7 +87,9 @@ const localStorageOf = (document: Document): Storage | undefined => {
 export class FrameworkMapToggle {
   private readonly document = inject(DOCUMENT);
   private readonly storage = localStorageOf(this.document);
-  protected readonly on = signal(readStored(this.storage));
+  protected readonly on = signal(
+    readSetting(this.storage, frameworkMapKey) === storedOn,
+  );
 
   constructor() {
     this.apply();
@@ -118,7 +97,11 @@ export class FrameworkMapToggle {
 
   protected toggle(): void {
     this.on.update((on) => !on);
-    writeStored(this.storage, this.on());
+    writeSetting(
+      this.storage,
+      frameworkMapKey,
+      this.on() ? storedOn : undefined,
+    );
     this.apply();
   }
 

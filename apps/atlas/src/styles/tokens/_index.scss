@@ -1,0 +1,7 @@
+@use 'scale';
+@use 'theme';
+
+:root {
+  @include scale.emit;
+}
+@include theme.emit;

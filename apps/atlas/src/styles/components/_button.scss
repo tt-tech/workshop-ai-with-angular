@@ -1,0 +1,60 @@
+// Button: primary (one per screen, the action that moves money), ghost (secondary), quiet (tertiary, in toolbars).
+.button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-2);
+  min-height: 2.5rem;
+  padding: 0 var(--space-5);
+  border: 1px solid var(--color-brand);
+  border-radius: var(--radius-m);
+  background: var(--color-brand);
+  color: var(--color-on-brand);
+  font-weight: var(--weight-medium);
+  text-decoration: none;
+  cursor: pointer;
+  transition:
+    background-color var(--motion-fast) var(--easing),
+    border-color var(--motion-fast) var(--easing);
+
+  &:hover:not(:disabled) {
+    background: var(--color-brand-hover);
+    border-color: var(--color-brand-hover);
+  }
+
+  &:disabled {
+    cursor: not-allowed;
+    border-color: var(--color-border);
+    background: var(--color-surface-sunken);
+    color: var(--color-text-muted);
+  }
+}
+
+.button--ghost {
+  background: transparent;
+  color: var(--color-brand-text);
+  border-color: var(--color-border-strong);
+
+  &:hover:not(:disabled) {
+    background: var(--color-brand-soft);
+    border-color: var(--color-brand);
+  }
+}
+
+.button--quiet {
+  min-height: 2rem;
+  padding: 0 var(--space-3);
+  border-color: transparent;
+  background: transparent;
+  color: var(--color-text-muted);
+
+  &:hover:not(:disabled) {
+    background: var(--color-surface-sunken);
+    border-color: transparent;
+    color: var(--color-text);
+  }
+}
+
+.button--block {
+  width: 100%;
+}

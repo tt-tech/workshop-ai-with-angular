@@ -14,13 +14,47 @@ const tone: Record<BadgeStatus, 'ok' | 'attention' | 'muted'> = {
 
 @Component({
   selector: 'atlas-status-badge',
-  template: `<span class="badge" [class]="'badge badge--' + tone()"><i class="dot"></i>{{ status() }}</span>`,
+  template: `<span class="badge" [class]="'badge badge--' + tone()"
+    ><i class="dot"></i>{{ status() }}</span
+  >`,
   styles: `
-    .badge { display: inline-flex; align-items: center; gap: 0.4rem; font-size: 0.8125rem; font-weight: 500; text-transform: capitalize; color: var(--ink-2); }
-    .dot { width: 0.5rem; height: 0.5rem; border-radius: 50%; background: currentColor; }
-    .badge--ok .dot { background: var(--green); }
-    .badge--attention .dot { background: var(--amber); }
-    .badge--muted .dot { background: var(--line-strong); }
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      gap: var(--space-2);
+      padding: 0.125rem var(--space-2);
+      border-radius: var(--radius-pill);
+      font-size: var(--text-xs);
+      font-weight: var(--weight-medium);
+      text-transform: capitalize;
+      white-space: nowrap;
+    }
+    .dot {
+      width: 0.4375rem;
+      height: 0.4375rem;
+      border-radius: 50%;
+    }
+    .badge--ok {
+      background: var(--color-brand-soft);
+      color: var(--color-brand-text);
+    }
+    .badge--ok .dot {
+      background: var(--color-success-dot);
+    }
+    .badge--attention {
+      background: var(--color-warning-soft);
+      color: var(--color-warning);
+    }
+    .badge--attention .dot {
+      background: var(--color-warning-dot);
+    }
+    .badge--muted {
+      background: var(--color-surface-sunken);
+      color: var(--color-text-muted);
+    }
+    .badge--muted .dot {
+      background: var(--color-neutral-dot);
+    }
   `,
 })
 export class StatusBadge {

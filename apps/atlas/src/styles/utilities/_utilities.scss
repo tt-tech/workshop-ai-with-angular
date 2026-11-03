@@ -1,0 +1,34 @@
+@use '../abstracts/mixins' as *;
+
+// Small, single-purpose classes shared by every screen, so components stop redefining .muted and .mono.
+.muted {
+  color: var(--color-text-muted);
+}
+.small {
+  font-size: var(--text-s);
+}
+.strong {
+  font-weight: var(--weight-medium);
+}
+.mono {
+  font-family: var(--font-mono);
+  font-size: var(--text-s);
+}
+.num {
+  text-align: right;
+  @include tabular;
+}
+.nowrap {
+  white-space: nowrap;
+}
+.cap {
+  text-transform: capitalize;
+}
+.visually-hidden {
+  @include visually-hidden;
+}
+
+.stack {
+  display: grid;
+  gap: var(--space-6);
+}

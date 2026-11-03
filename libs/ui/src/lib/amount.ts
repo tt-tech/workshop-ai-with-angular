@@ -4,11 +4,24 @@ import { MadPipe } from './mad.pipe';
 @Component({
   selector: 'atlas-amount',
   imports: [MadPipe],
-  template: `<span class="amount" [class.amount--credit]="isCredit()" [class.amount--debit]="!isCredit()">{{ signed() | mad }}</span>`,
+  template: `<span
+    class="amount"
+    [class.amount--credit]="isCredit()"
+    [class.amount--debit]="!isCredit()"
+    >{{ signed() | mad }}</span
+  >`,
   styles: `
-    .amount { font-variant-numeric: tabular-nums; white-space: nowrap; }
-    .amount--credit { color: var(--green); }
-    .amount--debit { color: var(--ink); }
+    .amount {
+      font-variant-numeric: tabular-nums;
+      white-space: nowrap;
+    }
+    .amount--credit {
+      color: var(--color-credit);
+      font-weight: var(--weight-medium);
+    }
+    .amount--debit {
+      color: var(--color-debit);
+    }
   `,
 })
 export class Amount {

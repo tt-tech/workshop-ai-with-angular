@@ -1,6 +1,18 @@
-import { Component, computed, inject, input, OnInit, signal } from '@angular/core';
+import {
+  Component,
+  computed,
+  inject,
+  input,
+  OnInit,
+  signal,
+} from '@angular/core';
 import { RouterLink } from '@angular/router';
-import { categoryLabel, formatRib, packageById, type TransactionCategory } from '@atlas/domain';
+import {
+  categoryLabel,
+  formatRib,
+  packageById,
+  type TransactionCategory,
+} from '@atlas/domain';
 import { AccountsStore, CardsStore } from '@atlas/data-access-banking';
 import { Amount, MadPipe, PageHeader, StatusBadge } from '@atlas/ui';
 
@@ -13,13 +25,15 @@ const allCategories = 'all';
     @let a = account();
     @if (a) {
       <atlas-page-header [title]="a.label" [subtitle]="a.balanceMad | mad">
-        <a class="button" [routerLink]="['/transfers/new', a.id]">Make a transfer</a>
+        <a class="button" [routerLink]="['/transfers/new', a.id]"
+          >Make a transfer</a
+        >
       </atlas-page-header>
 
       <div class="columns">
-        <section>
-          <div class="toolbar">
-            <h2 class="section-title">Transactions</h2>
+        <section class="card card--flush">
+          <div class="card__header">
+            <h2 class="card__title">Transactions</h2>
             <label class="filter">
               Category
               <select (change)="category.set($any($event.target).value)">
@@ -34,28 +48,53 @@ const allCategories = 'all';
             <tbody>
               @for (t of filtered(); track t.id) {
                 <tr>
-                  <td class="date">{{ t.date }}</td>
-                  <td>{{ t.label }}<div class="muted small">{{ categoryLabel[t.category] }}</div></td>
+                  <td class="date muted small">{{ t.date }}</td>
+                  <td>
+                    <span class="strong">{{ t.label }}</span>
+                    <div class="muted small">
+                      {{ categoryLabel[t.category] }}
+                    </div>
+                  </td>
                   <td class="num"><atlas-amount [value]="t.amountMad" /></td>
                 </tr>
               } @empty {
-                <tr><td colspan="3" class="muted">No transactions in this category.</td></tr>
+                <tr>
+                  <td colspan="3" class="muted">
+                    No transactions in this category.
+                  </td>
+                </tr>
               }
             </tbody>
           </table>
         </section>
 
-        <aside class="facts">
-          <h2 class="section-title">Details</h2>
+        <aside class="facts card">
+          <h2 class="card__title">Details</h2>
           <dl>
-            <dt>Status</dt><dd><atlas-status-badge [status]="a.status" /></dd>
-            <dt>RIB</dt><dd class="mono">{{ formatRib(a.rib) }}</dd>
-            <dt>Type</dt><dd>{{ a.type }}</dd>
-            <dt>Package</dt><dd>{{ pkg().name }}<div class="muted small">{{ pkg().monthlyFeeMad | mad }} per month</div><div class="muted small">Daily transfer limit <span class="nowrap">{{ pkg().dailyTransferLimitMad | mad }}</span></div></dd>
-            <dt>Opened</dt><dd>{{ a.openedOn }}</dd>
+            <dt>Status</dt>
+            <dd><atlas-status-badge [status]="a.status" /></dd>
+            <dt>RIB</dt>
+            <dd class="mono">{{ formatRib(a.rib) }}</dd>
+            <dt>Type</dt>
+            <dd>{{ a.type }}</dd>
+            <dt>Package</dt>
+            <dd>
+              {{ pkg().name }}
+              <div class="muted small">
+                {{ pkg().monthlyFeeMad | mad }} per month
+              </div>
+              <div class="muted small">
+                Daily transfer limit
+                <span class="nowrap">{{
+                  pkg().dailyTransferLimitMad | mad
+                }}</span>
+              </div>
+            </dd>
+            <dt>Opened</dt>
+            <dd>{{ a.openedOn }}</dd>
           </dl>
 
-          <h2 class="section-title">Cards</h2>
+          <h2 class="card__title">Cards</h2>
           @for (c of cards(); track c.id) {
             <div class="card-row">
               <span class="mono">{{ c.network }} •••• {{ c.last4 }}</span>
@@ -72,23 +111,58 @@ const allCategories = 'all';
     }
   `,
   styles: `
-    .columns { display: grid; grid-template-columns: minmax(0, 1.7fr) minmax(0, 1fr); gap: 3rem; }
-    .toolbar { display: flex; align-items: center; justify-content: space-between; margin-bottom: 0.75rem; }
-    .section-title { margin: 0 0 0.75rem; font-size: 0.9375rem; font-weight: 600; color: var(--ink-2); }
-    .facts .section-title:not(:first-child) { margin-top: 2rem; }
-    .filter { display: flex; align-items: center; gap: 0.5rem; color: var(--ink-2); font-size: 0.875rem; }
-    .date { color: var(--ink-2); white-space: nowrap; width: 7rem; }
-    .num { text-align: right; }
-    dl { display: grid; grid-template-columns: 6rem 1fr; row-gap: 0.75rem; margin: 0; }
-    dt { color: var(--ink-2); }
-    dd { margin: 0; }
-    .mono { font-family: var(--mono); font-size: 0.8125rem; }
-    .card-row { display: flex; align-items: center; gap: 0.75rem; padding: 0.6rem 0; border-top: 1px solid var(--line); }
-    .card-row atlas-status-badge { margin-left: auto; }
-    .muted { color: var(--ink-2); }
-    .small { font-size: 0.8125rem; }
-    .nowrap { white-space: nowrap; }
-    @media (max-width: 900px) { .columns { grid-template-columns: 1fr; gap: 2rem; } }
+    .columns {
+      display: grid;
+      grid-template-columns: minmax(0, 1.7fr) minmax(0, 1fr);
+      gap: var(--space-6);
+      align-items: start;
+    }
+    .filter {
+      display: flex;
+      align-items: center;
+      gap: var(--space-2);
+      color: var(--color-text-muted);
+      font-size: var(--text-s);
+    }
+    .filter select {
+      width: auto;
+      min-height: 2.25rem;
+    }
+    .date {
+      width: 7rem;
+      white-space: nowrap;
+    }
+    .facts .card__title {
+      margin-bottom: var(--space-4);
+    }
+    .facts .card__title:not(:first-child) {
+      margin-top: var(--space-8);
+    }
+    dl {
+      display: grid;
+      grid-template-columns: 6rem 1fr;
+      row-gap: var(--space-3);
+    }
+    dt {
+      color: var(--color-text-muted);
+      font-size: var(--text-s);
+    }
+    .card-row {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: var(--space-3);
+      padding: var(--space-3) 0;
+      border-top: 1px solid var(--color-border);
+    }
+    .card-row atlas-status-badge {
+      margin-left: auto;
+    }
+    @media (max-width: 56rem) {
+      .columns {
+        grid-template-columns: 1fr;
+      }
+    }
   `,
 })
 export class AccountDetail implements OnInit {
@@ -103,16 +177,29 @@ export class AccountDetail implements OnInit {
   protected readonly formatRib = formatRib;
 
   protected readonly account = computed(() => this.accounts.byId(this.id())());
-  protected readonly pkg = computed(() => packageById(this.account()?.packageId ?? 'atlas-essentiel'));
-  protected readonly transactions = computed(() => this.accounts.transactionsFor(this.id())());
-  protected readonly cards = computed(() => this.cardsStore.forAccount(this.id())());
+  protected readonly pkg = computed(() =>
+    packageById(this.account()?.packageId ?? 'atlas-essentiel'),
+  );
+  protected readonly transactions = computed(() =>
+    this.accounts.transactionsFor(this.id())(),
+  );
+  protected readonly cards = computed(() =>
+    this.cardsStore.forAccount(this.id())(),
+  );
 
-  protected readonly categories = computed(() => [...new Set(this.transactions().map((t) => t.category))].sort() as TransactionCategory[]);
+  protected readonly categories = computed(
+    () =>
+      [
+        ...new Set(this.transactions().map((t) => t.category)),
+      ].sort() as TransactionCategory[],
+  );
 
   protected readonly filtered = computed(() => {
     const category = this.category();
     const all = this.transactions();
-    return category === allCategories ? all : all.filter((t) => t.category === category);
+    return category === allCategories
+      ? all
+      : all.filter((t) => t.category === category);
   });
 
   ngOnInit(): void {

@@ -1,0 +1,73 @@
+// Raw palette: the only place in the app where a colour is written as a value.
+// Components never read these maps; they read the semantic custom properties from _theme.scss.
+// Atlas green is its own scale: a calm, slightly blue-leaning green, tuned so 700 carries white text (AA) and 600 reads as text on white.
+
+$brand: (
+  50: #e9f4ef,
+  100: #cfe7dc,
+  200: #a2d0bd,
+  300: #6db59a,
+  400: #3e987b,
+  500: #1f7e62,
+  600: #126c54,
+  700: #0b5d4b,
+  800: #084b3d,
+  900: #063a30,
+  950: #03231d,
+);
+
+// Neutrals carry a trace of the brand green so greys never look cold next to it.
+$neutral: (
+  0: #ffffff,
+  25: #fafcfb,
+  50: #f3f6f4,
+  100: #e8eeeb,
+  200: #d7e0dc,
+  300: #b8c6c0,
+  400: #7d8c86,
+  500: #66756f,
+  600: #4b5954,
+  700: #35413d,
+  800: #222c29,
+  900: #14211d,
+  950: #0b1311,
+);
+
+$amber: (
+  100: #fff1c2,
+  300: #ffd75e,
+  400: #f2b705,
+  700: #8a6400,
+  900: #3b2b00,
+);
+
+$red: (
+  50: #fdeceb,
+  300: #f4978e,
+  700: #b42318,
+  900: #3a1714,
+);
+
+// Night: the dark theme's own steps. Dark mode is not the light scale inverted; surfaces lift by lightness, accents desaturate.
+$night: (
+  canvas: #0b1311,
+  surface: #121d1a,
+  raised: #1a2824,
+  border: #24332e,
+  border-strong: #5b6e67,
+  text: #e4ece8,
+  muted: #9cada6,
+  brand: #5cc29d,
+  brand-hover: #7fd3b3,
+  brand-soft: #143a2f,
+  on-brand: #04201a,
+  credit: #6fd0a6,
+  rail: #07201a,
+);
+
+// Dev aid only (framework map), deliberately off-brand so it never reads as UI.
+$framework: (
+  angular: #0f766e,
+  legacy: #7c3aed,
+  angularjs: #c2410c,
+);

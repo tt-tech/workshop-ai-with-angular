@@ -1,38 +1,29 @@
-:root {
-  --petrol: #0e4d5b;
-  --petrol-deep: #093843;
-  --petrol-soft: #e4eef0;
-  --ink: #1b2a2f;
-  --ink-2: #5e6e70;
-  --mist: #f3f5f4;
-  --paper: #ffffff;
-  --line: #dce3e2;
-  --line-strong: #b9c5c4;
-  --amber: #e0a100;
-  --green: #2f855a;
-  --red: #b93a32;
-  --sans: 'IBM Plex Sans', system-ui, -apple-system, 'Segoe UI', sans-serif;
-  --mono: 'IBM Plex Mono', ui-monospace, SFMono-Regular, Menlo, monospace;
+// Atlas Bank global styles. Order of the cascade is declared once, here:
+// reset < tokens < base < components < utilities, and every component style (unlayered) wins over all of them.
+// Colours live only in styles/tokens; everywhere else reads --color-* (checked by scripts/check-tokens.mjs).
+@use 'sass:meta';
+
+@layer reset, tokens, base, components, utilities;
+
+@layer reset {
+  @include meta.load-css('styles/base/reset');
+}
+@layer tokens {
+  @include meta.load-css('styles/tokens');
 }
 
-* { box-sizing: border-box; }
-html { font-size: 15px; }
-body { margin: 0; font-family: var(--sans); color: var(--ink); background: var(--mist); line-height: 1.45; -webkit-font-smoothing: antialiased; }
-a { color: var(--petrol); }
-h1, h2, h3 { line-height: 1.2; }
+@layer base {
+  @include meta.load-css('styles/base/document');
+}
 
-.table { width: 100%; border-collapse: collapse; }
-.table th, .table td { text-align: left; padding: 0.7rem 0.5rem; border-bottom: 1px solid var(--line); vertical-align: top; }
-.table th { font-size: 0.8125rem; font-weight: 500; color: var(--ink-2); }
-.table th.num { text-align: right; }
-.table tbody tr:hover td { background: var(--petrol-soft); }
+@layer components {
+  @include meta.load-css('styles/components/card');
+  @include meta.load-css('styles/components/button');
+  @include meta.load-css('styles/components/field');
+  @include meta.load-css('styles/components/table');
+  @include meta.load-css('styles/components/alert');
+}
 
-.button { display: inline-flex; align-items: center; gap: 0.5rem; padding: 0.55rem 1rem; border-radius: 6px; border: 1px solid var(--petrol); background: var(--petrol); color: #fff; font: inherit; font-weight: 500; text-decoration: none; cursor: pointer; }
-.button:hover { background: var(--petrol-deep); }
-.button--ghost { background: transparent; color: var(--petrol); }
-
-select, input[type='text'], input[type='number'] { font: inherit; padding: 0.4rem 0.6rem; border: 1px solid var(--line-strong); border-radius: 6px; background: var(--paper); color: var(--ink); }
-
-:focus-visible { outline: 2px solid var(--amber); outline-offset: 2px; }
-
-@media (prefers-reduced-motion: reduce) { * { transition: none !important; animation: none !important; } }
+@layer utilities {
+  @include meta.load-css('styles/utilities/utilities');
+}
