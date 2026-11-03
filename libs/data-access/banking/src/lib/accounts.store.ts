@@ -19,9 +19,15 @@ export class AccountsStore {
   readonly loading = this.loadingState.asReadonly();
   readonly loaded = this.loadedState.asReadonly();
 
-  readonly totalBalanceMad = computed(() => this.accountsState().filter((a) => a.status !== 'closed').reduce((sum, a) => sum + a.balanceMad, 0));
+  readonly totalBalanceMad = computed(() =>
+    this.accountsState()
+      .filter((a) => a.status !== 'closed')
+      .reduce((sum, a) => sum + a.balanceMad, 0),
+  );
 
-  readonly recentTransactions = computed(() => [...this.transactionsState()].sort((a, b) => (a.date < b.date ? 1 : -1)));
+  readonly recentTransactions = computed(() =>
+    [...this.transactionsState()].sort((a, b) => (a.date < b.date ? 1 : -1)),
+  );
 
   /** Idempotent: concurrent callers share one in-flight request; later callers resolve immediately. */
   load(): Promise<void> {
@@ -32,7 +38,11 @@ export class AccountsStore {
 
   private async fetchAll(): Promise<void> {
     this.loadingState.set(true);
-    const [accounts, transactions, beneficiaries] = await Promise.all([this.backend.getAccounts(), this.backend.getTransactions(), this.backend.getBeneficiaries()]);
+    const [accounts, transactions, beneficiaries] = await Promise.all([
+      this.backend.getAccounts(),
+      this.backend.getTransactions(),
+      this.backend.getBeneficiaries(),
+    ]);
     this.accountsState.set(accounts);
     this.transactionsState.set(transactions);
     this.beneficiariesState.set(beneficiaries);
@@ -45,13 +55,21 @@ export class AccountsStore {
   }
 
   transactionsFor(accountId: string) {
-    return computed(() => this.recentTransactions().filter((t) => t.accountId === accountId));
+    return computed(() =>
+      this.recentTransactions().filter((t) => t.accountId === accountId),
+    );
   }
 
   transferredTodayMad(accountId: string): number {
     const today = new Date().toISOString().slice(0, 10);
     return this.transactionsState()
-      .filter((t) => t.accountId === accountId && t.category === 'transfer' && t.date === today && t.amountMad < 0)
+      .filter(
+        (t) =>
+          t.accountId === accountId &&
+          t.category === 'transfer' &&
+          t.date === today &&
+          t.amountMad < 0,
+      )
       .reduce((sum, t) => sum - t.amountMad, 0);
   }
 
@@ -59,10 +77,26 @@ export class AccountsStore {
     return computed(() => this.transactionsState().find((t) => t.id === id));
   }
 
-  async transfer(fromAccountId: string, toRib: string, amountMad: number, label: string): Promise<Transaction> {
-    const created = await this.backend.transfer(fromAccountId, toRib, amountMad, label);
+  async transfer(
+    fromAccountId: string,
+    toRib: string,
+    amountMad: number,
+    label: string,
+  ): Promise<Transaction> {
+    const created = await this.backend.transfer(
+      fromAccountId,
+      toRib,
+      amountMad,
+      label,
+    );
     this.transactionsState.update((all) => [created, ...all]);
-    this.accountsState.update((all) => all.map((a) => (a.id === fromAccountId ? { ...a, balanceMad: a.balanceMad - amountMad } : a)));
+    this.accountsState.update((all) =>
+      all.map((a) =>
+        a.id === fromAccountId
+          ? { ...a, balanceMad: a.balanceMad - amountMad }
+          : a,
+      ),
+    );
     return created;
   }
 }

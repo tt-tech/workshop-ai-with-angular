@@ -11,7 +11,9 @@ export class RatesStore {
 
   load(): Promise<void> {
     if (this.eurPerMadState() !== undefined) return Promise.resolve();
-    this.inFlight ??= this.backend.getEurRate().then((rate) => this.eurPerMadState.set(rate));
+    this.inFlight ??= this.backend
+      .getEurRate()
+      .then((rate) => this.eurPerMadState.set(rate));
     return this.inFlight;
   }
 }

@@ -10,7 +10,10 @@ export class CardsStore {
   private readonly loadedState = signal(false);
 
   readonly cards = this.cardsState.asReadonly();
-  readonly activeCount = computed(() => this.cardsState().filter((c) => c.status === 'active').length);
+  readonly loaded = this.loadedState.asReadonly();
+  readonly activeCount = computed(
+    () => this.cardsState().filter((c) => c.status === 'active').length,
+  );
 
   async load(): Promise<void> {
     if (this.loadedState()) return;
@@ -19,11 +22,15 @@ export class CardsStore {
   }
 
   forAccount(accountId: string) {
-    return computed(() => this.cardsState().filter((c) => c.accountId === accountId));
+    return computed(() =>
+      this.cardsState().filter((c) => c.accountId === accountId),
+    );
   }
 
   async setStatus(cardId: string, status: Card['status']): Promise<void> {
     const updated = await this.backend.setCardStatus(cardId, status);
-    this.cardsState.update((all) => all.map((c) => (c.id === updated.id ? updated : c)));
+    this.cardsState.update((all) =>
+      all.map((c) => (c.id === updated.id ? updated : c)),
+    );
   }
 }

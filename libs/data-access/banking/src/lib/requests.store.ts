@@ -12,7 +12,10 @@ export class RequestsStore {
 
   readonly requests = this.requestsState.asReadonly();
   readonly loading = this.loadingState.asReadonly();
-  readonly openCount = computed(() => this.requestsState().filter((r) => r.status !== 'closed').length);
+  readonly loaded = this.loadedState.asReadonly();
+  readonly openCount = computed(
+    () => this.requestsState().filter((r) => r.status !== 'closed').length,
+  );
 
   async load(): Promise<void> {
     if (this.loadedState()) return;
@@ -22,7 +25,9 @@ export class RequestsStore {
     this.loadedState.set(true);
   }
 
-  async create(request: Omit<ServiceRequest, 'id' | 'createdAt' | 'status'>): Promise<void> {
+  async create(
+    request: Omit<ServiceRequest, 'id' | 'createdAt' | 'status'>,
+  ): Promise<void> {
     const created = await this.backend.createRequest(request);
     this.requestsState.update((all) => [created, ...all]);
   }

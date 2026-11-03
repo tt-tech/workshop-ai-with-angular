@@ -18,20 +18,29 @@ const customerFirstName = 'Salma';
     <section class="hero" aria-labelledby="total-label">
       <p class="greeting">{{ greeting() }}, {{ firstName }}.</p>
       <p class="total-label" id="total-label">Total balance</p>
-      <p class="total">{{ accounts.totalBalanceMad() | mad }}</p>
-      <ul class="figures">
-        <li>
-          <strong>{{ spentThisMonth() | mad }}</strong> spent this month
-        </li>
-        <li>
-          <strong>{{ requests.openCount() }}</strong> open requests
-        </li>
-        <li>
-          <strong>{{ cards.activeCount() }}</strong> active card{{
-            cards.activeCount() === 1 ? '' : 's'
-          }}
-        </li>
-      </ul>
+      @if (ready()) {
+        <p class="total">{{ accounts.totalBalanceMad() | mad }}</p>
+        <ul class="figures">
+          <li>
+            <strong>{{ spentThisMonth() | mad }}</strong> spent this month
+          </li>
+          <li>
+            <strong>{{ requests.openCount() }}</strong> open requests
+          </li>
+          <li>
+            <strong>{{ cards.activeCount() }}</strong> active card{{
+              cards.activeCount() === 1 ? '' : 's'
+            }}
+          </li>
+        </ul>
+        @if (payFrom(); as from) {
+          <a class="send" [routerLink]="['/transfers/new', from.id]"
+            >Send money</a
+          >
+        }
+      } @else {
+        <p class="total pending" aria-busy="true">Loading balance…</p>
+      }
     </section>
 
     <div class="columns">
@@ -114,6 +123,28 @@ const customerFirstName = 'Salma';
       letter-spacing: -0.02em;
       font-variant-numeric: tabular-nums;
       line-height: 1.1;
+    }
+    .pending {
+      font-size: var(--text-xl);
+      opacity: 0.7;
+    }
+    .send {
+      display: inline-flex;
+      align-items: center;
+      min-height: 2.5rem;
+      margin-top: var(--space-6);
+      padding: 0 var(--space-5);
+      border-radius: var(--radius-m);
+      background: var(--color-accent);
+      color: var(--color-on-accent);
+      font-weight: var(--weight-semibold);
+      text-decoration: none;
+    }
+    .send:hover {
+      filter: brightness(1.06);
+    }
+    .send:focus-visible {
+      outline-color: var(--color-accent);
     }
     .figures {
       display: flex;
@@ -204,6 +235,14 @@ export class Dashboard implements OnInit {
   protected readonly categoryLabel = categoryLabel;
   protected readonly maskRib = maskRib;
 
+  protected readonly ready = computed(() =>
+    [this.accounts.loaded(), this.cards.loaded(), this.requests.loaded()].every(
+      Boolean,
+    ),
+  );
+  protected readonly payFrom = computed(() =>
+    this.accounts.accounts().find((a) => a.status === 'active'),
+  );
   protected readonly recent = computed(() =>
     this.accounts.recentTransactions().slice(0, recentCount),
   );

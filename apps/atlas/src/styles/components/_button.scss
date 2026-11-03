@@ -22,11 +22,10 @@
     border-color: var(--color-brand-hover);
   }
 
+  // Disabled keeps its colour, faded, so the main action stays recognisable.
   &:disabled {
     cursor: not-allowed;
-    border-color: var(--color-border);
-    background: var(--color-surface-sunken);
-    color: var(--color-text-muted);
+    opacity: 0.45;
   }
 }
 

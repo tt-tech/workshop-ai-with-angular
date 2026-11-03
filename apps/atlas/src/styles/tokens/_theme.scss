@@ -9,6 +9,7 @@
   --color-surface: #{map.get($neutral, 0)};
   --color-surface-raised: #{map.get($neutral, 0)};
   --color-surface-sunken: #{map.get($neutral, 100)};
+  --color-field: #{map.get($neutral, 0)};
   --color-border: #{map.get($neutral, 200)};
   --color-border-strong: #{map.get($neutral, 400)};
   --color-text: #{map.get($neutral, 900)};
@@ -46,6 +47,7 @@
   --color-surface: #{map.get($night, surface)};
   --color-surface-raised: #{map.get($night, raised)};
   --color-surface-sunken: #{map.get($night, canvas)};
+  --color-field: #{map.get($night, canvas)};
   --color-border: #{map.get($night, border)};
   --color-border-strong: #{map.get($night, border-strong)};
   --color-text: #{map.get($night, text)};
