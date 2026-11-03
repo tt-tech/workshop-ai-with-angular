@@ -52,7 +52,9 @@ const labelMaxLength = 35;
           </label>
           <label class="field">
             Label
-            <span class="field__hint">Shown in the account history.</span>
+            <span class="field__hint"
+              >Shown on the receipt. Use **bold** for emphasis.</span
+            >
             <input
               type="text"
               [attr.maxlength]="labelMaxLength"
@@ -212,12 +214,12 @@ export class NewTransfer implements OnInit {
     const from = this.account();
     if (!from || !this.verdict()?.ok) return;
     this.saving.set(true);
-    await this.store.transfer(
+    const created = await this.store.transfer(
       from.id,
       this.selectedRib(),
       this.amountMad(),
       this.label(),
     );
-    await this.router.navigate(['/accounts', from.id]);
+    await this.router.navigate(['/transfers/receipt', created.id]);
   }
 }

@@ -171,7 +171,7 @@ describe('/transfers/new/:accountId', () => {
     ).rejects.toThrow('daily limit');
   });
 
-  it('moves the money and returns to the account', async () => {
+  it('moves the money and shows the receipt', async () => {
     const { harness, type, click, store, router } = await open();
     type('Amount (MAD)', '500');
     type('Label', 'Loyer');
@@ -179,6 +179,7 @@ describe('/transfers/new/:accountId', () => {
     await harness.fixture.whenStable();
     harness.detectChanges();
     expect(store.accounts()[0].balanceMad).toBe(1500);
-    expect(router.url).toBe('/accounts/a-1');
+    expect(router.url).toBe('/transfers/receipt/t-1');
+    expect(harness.routeNativeElement?.textContent).toContain('Loyer');
   });
 });
