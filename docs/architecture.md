@@ -137,24 +137,25 @@ flowchart TB
 ```mermaid
 gitGraph
   commit id: "Atlas Bank, three frameworks" tag: "main"
-  branch track1/m1-start
+  branch "track1/m1-start"
   commit id: "no AGENTS.md, no boundaries"
   checkout main
-  branch track1/m1-solution
+  branch "track1/m1-solution"
   commit id: "task 001: CSV export"
   checkout main
-  branch track1/m2b-angularjs-solution
+  branch "track1/m2b-angularjs-solution"
   commit id: "task 006: beneficiaries migrated"
   checkout main
-  branch track1/m2-ngmodule-solution
+  branch "track1/m2-ngmodule-solution"
   commit id: "pin, build beside, flip"
   commit id: "delete legacy last"
-  branch track1/m2c-tokens-solution
+  branch "track1/m2c-tokens-solution"
   commit id: "task 007: blocked banner"
-  checkout track1/m2-ngmodule-solution
-  branch track1/m5-start
+  checkout "track1/m2-ngmodule-solution"
+  branch "track1/m5-start"
   commit id: "security rules removed"
-  commit id: "receipt + rules + fix" tag: "m5-security-solution"
+  branch "track1/m5-security-solution"
+  commit id: "receipt + rules + fix"
 ```
 
 `main` is the start of every track: nothing migrated, all rules on. A `*-start` branch exists only where a module starts from less than `main` (module 1 without guidance, module 5 without the security rules). `track1/solution` merges every Track 1 solution. When `main` changes, the track branches are rebased onto it, so a reference never drifts from the code people start with.
