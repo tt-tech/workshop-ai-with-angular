@@ -25,6 +25,7 @@
       "@atlas/data-access-banking": ["./libs/data-access/banking/src/index.ts"],
       "@atlas/feature-accounts": ["./libs/feature/accounts/src/index.ts"],
       "@atlas/feature-requests": ["./libs/feature/requests/src/index.ts"],
+      "@atlas/feature-transfers": ["./libs/feature/transfers/src/index.ts"],
       "@atlas/angularjs-beneficiaries": [
         "./libs/angularjs/beneficiaries/src/index.ts"
       ],
