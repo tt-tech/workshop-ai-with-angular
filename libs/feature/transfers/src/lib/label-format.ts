@@ -8,4 +8,8 @@ export const formatLabel = (label: string): LabelSegment[] =>
   label
     .split(/(\*\*[^*]+\*\*)/)
     .filter((part) => part !== '')
-    .map((part) => (part.startsWith('**') && part.endsWith('**') ? { text: part.slice(2, -2), bold: true } : { text: part, bold: false }));
+    .map((part) =>
+      part.startsWith('**') && part.endsWith('**')
+        ? { text: part.slice(2, -2), bold: true }
+        : { text: part, bold: false },
+    );

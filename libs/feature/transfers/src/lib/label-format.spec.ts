@@ -10,6 +10,8 @@ describe('formatLabel', () => {
   });
 
   it('never produces markup from the label itself', () => {
-    expect(formatLabel('<img src=x onerror=alert(1)>')).toEqual([{ text: '<img src=x onerror=alert(1)>', bold: false }]);
+    expect(formatLabel('<img src=x onerror=alert(1)>')).toEqual([
+      { text: '<img src=x onerror=alert(1)>', bold: false },
+    ]);
   });
 });
