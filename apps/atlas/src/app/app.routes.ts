@@ -20,9 +20,7 @@ export const appRoutes: Route[] = [
   {
     path: 'beneficiaries',
     loadChildren: () =>
-      import('@atlas/angularjs-beneficiaries').then(
-        (m) => m.beneficiariesRoutes,
-      ),
+      import('@atlas/feature-beneficiaries').then((m) => m.beneficiariesRoutes),
   },
   {
     path: 'transfers',
