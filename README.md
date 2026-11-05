@@ -43,6 +43,8 @@ npm run typecheck
 
 Diagrams (dependency contract, runtime flow, legacy corner, agent guidance, git tags): [`docs/architecture.md`](docs/architecture.md).
 
+How Angular and AngularJS share services, components and change detection in the hybrid screen, in depth: [`docs/hybrid-angularjs.md`](docs/hybrid-angularjs.md).
+
 ## Layout
 
 ```
