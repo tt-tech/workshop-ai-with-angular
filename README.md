@@ -75,7 +75,7 @@ exercises                     one file per workshop module
 | 2c — Restyle without breaking (tokens)    | `exercises/m2c-design-tokens.md`       | `track1/m2-ngmodule-solution`  | `track1/m2c-tokens-solution`    |
 | 5 — Security both ways                    | `exercises/m5-security-both-ways.md`   | `track1/m5-start`              | `track1/m5-security-solution`   |
 
-`track1/solution` has every Track 1 module done. Start a module with `git switch -c <module>/<your-name> <start branch>`.
+`track1/solution` has every Track 1 module done. Start a module with `git switch -c <module>/<your-name> origin/<start branch>`.
 
 ### Track 2: AI features in the product
 

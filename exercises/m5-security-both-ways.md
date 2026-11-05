@@ -16,7 +16,7 @@ git diff --stat track1/m5-start
 
 **Goal:** build the receipt feature the way everyone does: quickly, from the ticket, with no security rule in the rules file yet.
 
-1. `git switch -c m5/<your-tool> track1/m5-start`. Read `AGENTS.md`: there is no Security section. That is deliberate.
+1. `git switch -c m5/<your-tool> origin/track1/m5-start`. Read `AGENTS.md`: there is no Security section. That is deliberate.
 2. Paste the take-1 prompt from `docs/video/preview-video.md` verbatim. Let the agent finish. Make a transfer with label `Loyer **octobre**` and look at the receipt.
 3. Checkpoint. Lint is green. Tests are green. Write down how long it took.
 
@@ -38,7 +38,7 @@ git diff --stat track1/m5-start
 
 **Goal:** make the same agent produce the safe version, by changing nothing but the rules.
 
-1. `git checkout track1/m5-security-solution -- AGENTS.md eslint.config.mjs scripts package.json`. Read the new Security section and the two lint rules. Run `npm run lint:arch`: it now fails on your scene-1 code. That failure is the lesson.
+1. `git checkout origin/track1/m5-security-solution -- AGENTS.md eslint.config.mjs scripts package.json`. Read the new Security section and the two lint rules. Run `npm run lint:arch`: it now fails on your scene-1 code. That failure is the lesson.
 2. Paste the take-3 prompt verbatim. Checkpoint: lint green, tests green, the img label renders as text, the backend rejects the over-limit transfer.
 3. Walk your diff against the reference (`git diff track1/m5-security-solution`). Three things to look for: did the rule move to the boundary or just get duplicated; did the label renderer stay in the template or did a library appear; where did the rate come from.
 
