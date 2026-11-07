@@ -1,6 +1,6 @@
 # Where the standard lives: OWASP, mapped to what a frontend team controls
 
-One page for module 5. The lists change; the mapping is the thing to keep. Check the current editions at https://owasp.org/www-project-top-ten/ and https://genai.owasp.org/ before every workshop; never quote a numbered entry from memory on a slide.
+One page for module 5. The lists change; the mapping is the thing to keep. Check the current edition at https://owasp.org/www-project-top-ten/ before every workshop; never quote a numbered entry from memory on a slide.
 
 ## OWASP Top 10 for web applications → the frontend's share
 
@@ -14,16 +14,6 @@ One page for module 5. The lists change; the mapping is the thing to keep. Check
 | Security misconfiguration | CSP, headers, source maps in production | out of scope for the demo; see the site's `netlify.toml` for the pattern | deploy checklist |
 | Identification and authentication | Tokens in storage, session handling | not in the demo | review |
 | Logging and monitoring | Client errors reported without PII | not in the demo | review |
-
-## OWASP Top 10 for LLM applications → Track 2 of the series
-
-| Risk | In an Angular product | Part of the series |
-|---|---|---|
-| Prompt injection | user text reaches the model through your own screens; tools the model can call | *The data the model may see*, *Tool calling* |
-| Sensitive information disclosure | the model answers with whatever it was given; authorisation before the model | *The data the model may see* |
-| Excessive agency | write tools without a human confirmation; the model touching state directly | *Tool calling*, *Agentic UI* |
-| Unbounded consumption | no token cap, no abort, no rate limit | *Streaming into signals*, *Tool calling* |
-| Supply chain / model provenance | which model, hosted where, decided by the data classification | *The data the model may see* |
 
 ## Two layers, always both
 
