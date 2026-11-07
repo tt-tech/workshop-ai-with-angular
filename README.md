@@ -77,10 +77,6 @@ exercises                     one file per workshop module
 
 `track1/solution` has every Track 1 module done. Start a module with `git switch -c <module>/<your-name> origin/<start branch>`.
 
-### Track 2: AI features in the product
-
-_(coming)_
-
 The tags from the first recordings (`m1-unconstrained`, `m2-start`, `m2-migrated`, `video-*`) stay for older links; new work uses the branches.
 
 ## Licence
