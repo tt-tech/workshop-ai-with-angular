@@ -15,6 +15,7 @@
 .input,
 .field input,
 .field select,
+.field textarea,
 select,
 input[type='text'],
 input[type='number'],
@@ -41,6 +42,13 @@ input[type='search'] {
     border-color: var(--color-focus);
     box-shadow: 0 0 0 3px var(--color-brand-soft);
   }
+}
+
+.field textarea {
+  min-height: auto;
+  padding-block: var(--space-2);
+  font: inherit;
+  resize: vertical;
 }
 
 // Field with a fixed unit (MAD) that is part of the box, not of the value.

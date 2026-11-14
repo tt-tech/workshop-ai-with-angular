@@ -18,6 +18,7 @@ describe('App', () => {
       'Accounts',
       'Requests',
       'Beneficiaries',
+      'Assistant',
     ]);
   });
 });

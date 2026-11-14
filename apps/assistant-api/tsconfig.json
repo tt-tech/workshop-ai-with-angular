@@ -1,0 +1,10 @@
+{
+  "extends": "../../tsconfig.base.json",
+  "compilerOptions": {
+    "noEmit": true,
+    "noPropertyAccessFromIndexSignature": true,
+    "lib": ["es2023"],
+    "types": ["node", "vitest/globals"]
+  },
+  "include": ["src/**/*.ts", "vite.config.mts"]
+}

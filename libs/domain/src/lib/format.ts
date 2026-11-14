@@ -27,3 +27,8 @@ export const formatMad = (amount: number): string => {
   const grouped = integer.replace(/\B(?=(\d{3})+(?!\d))/g, thousandsSeparator);
   return `${sign}${grouped}${decimalSeparator}${fraction} MAD`;
 };
+
+export const formatMonth = (yearMonth: string): string => {
+  const [year, month] = yearMonth.split('-').map(Number);
+  return new Date(Date.UTC(year, month - 1, 1)).toLocaleString('en-GB', { month: 'long', year: 'numeric', timeZone: 'UTC' });
+};

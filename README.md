@@ -29,6 +29,39 @@ A UI component imports a store, and `npm run lint:arch` stops it. The same check
 
 ![npm run lint:arch failing on a module boundary violation](docs/screenshots/06-lint-arch-fail.png)
 
+## Generative UI with A2UI (branch `feat/generative-ui`)
+
+An **Assistant** page where a model draws the answer screen from Atlas components with [A2UI](https://a2ui.org), Google's open protocol for generative UI. The model only arranges the screen; every amount comes from the server. Write-up: [Generative UI in Angular: the model never sees the money](https://tt-tech.io/blog/generative-ui-a2ui-angular).
+
+<table>
+<tr>
+<td width="50%"><img src="docs/screenshots/07-assistant.png" alt="The assistant with Claude: a spending chart for September and the server log"><br><sub><b>A real Claude answer.</b> Claude placed a title and a <code>SpendingChart</code> macro for <code>a-current</code>; the server filled in the amounts. The server log shows what the model placed.</sub></td>
+<td width="50%"><img src="docs/screenshots/08-assistant-blocked.png" alt="A simulated compromised model tries to leak the balance through an image URL and is blocked"><br><sub><b>A blocked attack.</b> A simulated compromised model hides the balance in an image URL. The server gate removes the image and logs the URL it wanted.</sub></td>
+</tr>
+</table>
+
+```bash
+npm run assistant:api:fake      # scripted answers and the compromised model, no key, no cost
+npm run assistant:api:own-key   # paste your Anthropic or OpenAI key on the page; never stored, never logged
+npm run assistant:api           # keys from the macOS Keychain (anthropic-api-key, openai-api-key)
+```
+
+Then start the app and open `/assistant`. Pick Claude, GPT or **Compromised model (simulated)** and try the seven scenario buttons; the server log under each answer shows what the gate let through.
+
+```
+apps/assistant-api/src
+  http/          the server: routes, loopback and JSON guard, body limit, error mapping
+  assistant/     ask and act, the system prompt, the trace
+  gate/          the gate: gate.ts (start here), the allow-list, the macros, the tree check
+  models/        Claude, GPT and the scripted (compromised) model behind one interface
+  a2ui/          reading the model's reply, writing A2UI messages
+libs/data-access/assistant   AssistantBackend (HttpClient) + AssistantStore
+libs/feature/assistant       the page, the scenarios and the Atlas catalog for the renderer
+libs/domain                  the contract both sides share (component names, data shapes)
+```
+
+How it works, what goes to the model and what does not, and every rule of the gate: [`docs/generative-ui.md`](docs/generative-ui.md).
+
 ## Run
 
 ```bash

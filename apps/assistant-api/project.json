@@ -1,0 +1,25 @@
+{
+  "name": "assistant-api",
+  "$schema": "../../node_modules/nx/schemas/project-schema.json",
+  "projectType": "application",
+  "sourceRoot": "apps/assistant-api/src",
+  "tags": ["scope:atlas", "type:app"],
+  "targets": {
+    "build": {
+      "executor": "nx:run-commands",
+      "outputs": ["{workspaceRoot}/dist/apps/assistant-api"],
+      "options": {
+        "command": "esbuild apps/assistant-api/src/main.ts --bundle --platform=node --format=esm --packages=external --tsconfig=apps/assistant-api/tsconfig.json --outfile=dist/apps/assistant-api/main.mjs"
+      }
+    },
+    "typecheck": {
+      "executor": "nx:run-commands",
+      "options": { "command": "tsc -p apps/assistant-api/tsconfig.json --noEmit" }
+    },
+    "test": {
+      "executor": "@nx/vitest:test",
+      "options": { "reportsDirectory": "coverage/apps/assistant-api" }
+    },
+    "lint": { "executor": "@nx/eslint:lint" }
+  }
+}

@@ -1,0 +1,10 @@
+{
+  "name": "data-access-assistant",
+  "$schema": "../../../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "libs/data-access/assistant/src",
+  "projectType": "library",
+  "tags": ["scope:atlas", "type:data-access"],
+  "targets": {
+    "lint": { "executor": "@nx/eslint:lint" }
+  }
+}

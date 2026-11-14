@@ -1,0 +1,14 @@
+// The A2UI renderer reads --a2ui-color-*; inside an assistant answer they follow the Atlas tokens.
+.a2ui-theme {
+  --a2ui-color-background: transparent;
+  --a2ui-color-on-background: var(--color-text);
+  --a2ui-color-surface: var(--color-surface-raised);
+  --a2ui-color-on-surface: var(--color-text);
+  --a2ui-color-primary: var(--color-brand);
+  --a2ui-color-on-primary: var(--color-on-brand);
+  --a2ui-color-secondary: var(--color-surface-sunken);
+  --a2ui-color-on-secondary: var(--color-text);
+  --a2ui-color-border: var(--color-border);
+  --a2ui-color-input: var(--color-field);
+  --a2ui-color-on-input: var(--color-text);
+}

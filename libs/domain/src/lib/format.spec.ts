@@ -1,4 +1,4 @@
-import { formatMad, formatRib, maskRib } from './format';
+import { formatMad, formatMonth, formatRib, maskRib } from './format';
 
 describe('formatMad', () => {
   it('groups thousands with a space and uses a comma for decimals', () => {
@@ -15,5 +15,11 @@ describe('formatRib', () => {
   });
   it('masks everything but the last four digits', () => {
     expect(maskRib('007780000123456789012345')).toBe('•••• 2345');
+  });
+});
+
+describe('formatMonth', () => {
+  it('writes a year-month as the month name and year', () => {
+    expect(formatMonth('2026-09')).toBe('September 2026');
   });
 });

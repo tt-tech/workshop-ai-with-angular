@@ -28,7 +28,9 @@
       "@atlas/angularjs-beneficiaries": [
         "./libs/angularjs/beneficiaries/src/index.ts"
       ],
-      "@atlas/legacy-transfers": ["./libs/legacy/transfers/src/index.ts"]
+      "@atlas/legacy-transfers": ["./libs/legacy/transfers/src/index.ts"],
+      "@atlas/data-access-assistant": ["./libs/data-access/assistant/src/index.ts"],
+      "@atlas/feature-assistant": ["./libs/feature/assistant/src/index.ts"]
     }
   },
   "exclude": ["node_modules", "tmp"]

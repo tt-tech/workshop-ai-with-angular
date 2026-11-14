@@ -4,7 +4,6 @@
 @use 'palette' as *;
 
 @mixin light {
-  color-scheme: light;
   --color-canvas: #{map.get($neutral, 50)};
   --color-surface: #{map.get($neutral, 0)};
   --color-surface-raised: #{map.get($neutral, 0)};
@@ -42,7 +41,6 @@
 }
 
 @mixin dark {
-  color-scheme: dark;
   --color-canvas: #{map.get($night, canvas)};
   --color-surface: #{map.get($night, surface)};
   --color-surface-raised: #{map.get($night, raised)};
@@ -71,6 +69,20 @@
   --color-hero-to: #{map.get($night, rail)};
   --shadow-1: 0 0 0 1px #{map.get($night, border)};
   --shadow-2: 0 8px 24px #{rgba(map.get($neutral, 950), 0.5)};
+}
+
+@mixin color-scheme {
+  :root {
+    color-scheme: light;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme='light']) {
+      color-scheme: dark;
+    }
+  }
+  :root[data-theme='dark'] {
+    color-scheme: dark;
+  }
 }
 
 @mixin emit {

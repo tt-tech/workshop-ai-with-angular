@@ -18,6 +18,11 @@ export const appRoutes: Route[] = [
       import('@atlas/feature-requests').then((m) => m.requestsRoutes),
   },
   {
+    path: 'assistant',
+    loadChildren: () =>
+      import('@atlas/feature-assistant').then((m) => m.assistantRoutes),
+  },
+  {
     path: 'beneficiaries',
     loadChildren: () =>
       import('@atlas/angularjs-beneficiaries').then(

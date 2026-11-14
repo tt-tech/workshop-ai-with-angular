@@ -1,7 +1,9 @@
 // Atlas Bank global styles. Order of the cascade is declared once, here:
 // reset < tokens < base < components < utilities, and every component style (unlayered) wins over all of them.
+// color-scheme alone is unlayered (theme.color-scheme at the end), so no unlayered vendor rule can override it.
 // Colours live only in styles/tokens; everywhere else reads --color-* (checked by scripts/check-tokens.mjs).
 @use 'sass:meta';
+@use 'styles/tokens/theme';
 
 @layer reset, tokens, base, components, utilities;
 
@@ -22,8 +24,11 @@
   @include meta.load-css('styles/components/field');
   @include meta.load-css('styles/components/table');
   @include meta.load-css('styles/components/alert');
+  @include meta.load-css('styles/components/a2ui');
 }
 
 @layer utilities {
   @include meta.load-css('styles/utilities/utilities');
 }
+
+@include theme.color-scheme;
