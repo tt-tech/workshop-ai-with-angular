@@ -31,7 +31,7 @@ A UI component imports a store, and `npm run lint:arch` stops it. The same check
 
 ## Generative UI with A2UI (branch `feat/generative-ui`)
 
-An **Assistant** page where a model draws the answer screen from Atlas components with [A2UI](https://a2ui.org), Google's open protocol for generative UI. The model only arranges the screen; every amount comes from the server. Write-up: [Generative UI in a bank app: the model never sees the balance](https://tt-tech.io/blog/generative-ui-a2ui-angular).
+An **Assistant** page where a model draws the answer screen from Atlas components with [A2UI](https://a2ui.org), Google's open protocol for generative UI. The model only arranges the screen; every amount comes from the server. Write-up: [Google's A2UI in a bank app: the model never sees the balance](https://tt-tech.io/blog/generative-ui-a2ui-angular).
 
 <table>
 <tr>
